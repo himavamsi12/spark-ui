@@ -64,6 +64,7 @@ export default function PortraitOrbit({
   textColor = "#1f1f1f",
   fontFamily = "var(--font-plus-jakarta-sans), sans-serif",
   textScale = 100,
+  autoPlay = false,
 }: {
   brand?: string;
   navAction?: string;
@@ -79,6 +80,8 @@ export default function PortraitOrbit({
   textColor?: string;
   fontFamily?: string;
   textScale?: number;
+  /** Sweep an invisible pointer around the ring, for previews nobody is hovering. */
+  autoPlay?: boolean;
 }) {
   const scale = textScale / 100;
   const rootRef = useRef<HTMLDivElement>(null);
@@ -449,7 +452,22 @@ export default function PortraitOrbit({
     };
     let restingApplied = false;
 
+    // Auto-play: a virtual pointer circles just outside the ring, feeding the
+    // same hover logic as a real cursor, so the cards flip and push outward as
+    // it passes and the ring tilts toward it.
+    const autoStart = performance.now();
+    function autoPointer() {
+      const rect = root!.getBoundingClientRect();
+      if (!rect.width) return;
+      const zoom = root!.offsetWidth ? rect.width / root!.offsetWidth : 1;
+      const t = (performance.now() - autoStart) / 1000;
+      const angle = t * ((Math.PI * 2) / 9) - Math.PI / 2; // one lap every 9s, starting at the top
+      const r = config.radius * galleryScaleFor(root!.clientWidth) * zoom * (1.08 + 0.06 * Math.sin(t * 0.8));
+      onMouseMove({ clientX: rect.left + rect.width / 2 + Math.cos(angle) * r, clientY: rect.top + rect.height / 2 + Math.sin(angle) * r } as MouseEvent);
+    }
+
     function animate() {
+      if (autoPlay) autoPointer();
       if (!isPreviewActive && !isTransitioning && settled()) {
         // Apply the exact rest values once, then idle.
         if (!restingApplied) {
@@ -513,7 +531,7 @@ export default function PortraitOrbit({
       gallery.innerHTML = "";
       titleContainer.innerHTML = "";
     };
-  }, [images, titles, imageCount, radius, sensitivity, effectFalloff, cardMoveAmount, scale]);
+  }, [images, titles, imageCount, radius, sensitivity, effectFalloff, cardMoveAmount, scale, autoPlay]);
 
   const labelStyle = {
     color: textColor,

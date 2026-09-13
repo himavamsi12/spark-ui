@@ -248,6 +248,8 @@ export default function ParallaxMinimapScroll({
 
     function syncElements() {
       const current = Math.round(-targetY / projectHeight());
+      // A non-finite index would make the loop below run forever.
+      if (!Number.isFinite(current)) return;
       const min = current - BUFFER_SIZE;
       const max = current + BUFFER_SIZE;
 
@@ -306,6 +308,14 @@ export default function ParallaxMinimapScroll({
 
     let raf = 0;
     function animate() {
+      // The root can measure 0px tall for a frame (for example while a preview
+      // card is still being laid out). Every step below divides by that height,
+      // and a zero turned the element loop into an infinite one that froze the
+      // whole page, so those frames are skipped.
+      if (!(projectHeight() > 0)) {
+        raf = requestAnimationFrame(animate);
+        return;
+      }
       const cfg = configRef.current;
       const now = Date.now();
 

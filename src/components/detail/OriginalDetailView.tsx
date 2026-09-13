@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { Suspense, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import {
   ChevronLeft,
@@ -230,7 +230,11 @@ export default function OriginalDetailView({
           {tab === "preview" ? (
             Comp && (
               <DesktopFrame lifted={customizeOpen}>
-                <Comp key={replayKey} {...params} />
+                {/* Its own boundary, so the page around it never blanks while the
+                    component's code is loading. */}
+                <Suspense fallback={null}>
+                  <Comp key={replayKey} {...params} />
+                </Suspense>
               </DesktopFrame>
             )
           ) : (

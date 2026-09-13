@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Check, Code2, Copy, Eye, PanelLeft, PanelRightOpen, RotateCw, SlidersHorizontal, Terminal } from "lucide-react";
 import Header from "@/components/layout/Header";
@@ -198,7 +198,9 @@ export default function ChartDetailView({
               <div className="min-h-[420px] flex items-center justify-center p-6 sm:p-10 bg-void">
                 {Comp && (
                   <div className="w-full max-w-xl">
-                    <Comp key={replayKey} theme={theme} {...params} />
+                    <Suspense fallback={null}>
+                      <Comp key={replayKey} theme={theme} {...params} />
+                    </Suspense>
                   </div>
                 )}
               </div>
