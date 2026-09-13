@@ -1,9 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
 
-const VIDEO_SRC = "https://cdn.midjourney.com/video/71048e88-d8e6-470e-88ef-555c01eacb12/0.mp4";
+// Hosted with the site: the original clip lived on Midjourney's CDN, which
+// refuses to serve video to other origins, so the backdrop never loaded.
+const VIDEO_SRC = "/aurora-login-card/aurora.mp4";
+const VIDEO_POSTER = "/aurora-login-card/poster.jpg";
 
 /**
  * The submit button's rotating rim and its glow are the same conic gradient, so
@@ -104,6 +107,29 @@ export default function AuroraLoginCard({
   const scale = textScale / 100;
   const [email, setEmail] = useState("");
   const sunset = `linear-gradient(135deg, ${accentFrom}, ${accentTo})`;
+  // If a custom clip fails to load, fall back to the accent gradient rather
+  // than leaving an empty black panel. Keyed on the source, so swapping in a
+  // new URL gets a fresh attempt.
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  const videoFailed = failedSrc === videoSrc;
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  // The page is server-rendered, so a clip can fail before React attaches
+  // onError and the event is missed. Check each video's state after mount too.
+  useEffect(() => {
+    if (videoFailed) return;
+    const check = () => {
+      const broken = videoRefs.current.some((v) => v && (v.error || v.networkState === HTMLMediaElement.NETWORK_NO_SOURCE));
+      if (broken) setFailedSrc(videoSrc);
+    };
+    const id = window.setTimeout(check, 0);
+    const late = window.setTimeout(check, 4000);
+    return () => {
+      window.clearTimeout(id);
+      window.clearTimeout(late);
+    };
+  }, [videoSrc, videoFailed]);
+  const poster = videoSrc === VIDEO_SRC ? VIDEO_POSTER : undefined;
+  const fallback = `radial-gradient(120% 90% at 30% 20%, ${accentTo}, transparent 60%), radial-gradient(120% 90% at 80% 90%, ${accentFrom}, transparent 55%), #0b0b12`;
 
   return (
     <div
@@ -111,15 +137,25 @@ export default function AuroraLoginCard({
       style={{ fontFamily }}
     >
       {/* ── Background: the same clip as the left panel, dimmed back ── */}
-      <video
-        src={videoSrc}
-        autoPlay
-        muted
-        loop
-        playsInline
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 h-full w-full scale-105 object-cover"
-      />
+      {videoFailed ? (
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 scale-105" style={{ background: fallback }} />
+      ) : (
+        <video
+          key={videoSrc}
+          ref={(el) => {
+            videoRefs.current[0] = el;
+          }}
+          src={videoSrc}
+          poster={poster}
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-hidden="true"
+          onError={() => setFailedSrc(videoSrc)}
+          className="pointer-events-none absolute inset-0 h-full w-full scale-105 object-cover"
+        />
+      )}
       <div className="pointer-events-none absolute inset-0 bg-black/10 backdrop-blur-sm" />
 
       {/* ── Card ── */}
@@ -132,15 +168,25 @@ export default function AuroraLoginCard({
           className="relative m-2 h-56 shrink-0 overflow-hidden rounded-[2rem] md:h-auto md:w-[45%]"
           style={{ background: panelBackground }}
         >
-          <video
-            src={videoSrc}
-            autoPlay
-            muted
-            loop
-            playsInline
-            aria-hidden="true"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
+          {videoFailed ? (
+            <div aria-hidden="true" className="absolute inset-0" style={{ background: fallback }} />
+          ) : (
+            <video
+              key={videoSrc}
+              ref={(el) => {
+                videoRefs.current[1] = el;
+              }}
+              src={videoSrc}
+              poster={poster}
+              autoPlay
+              muted
+              loop
+              playsInline
+              aria-hidden="true"
+              onError={() => setFailedSrc(videoSrc)}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          )}
         </div>
 
         {/* Right: the form */}

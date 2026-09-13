@@ -226,7 +226,7 @@ export const ORIGINALS: OriginalEntry[] = [
       { key: "xLabel", label: "X Button", type: "text", default: "Continue with X", description: "Label on the X button." },
       { key: "footerText", label: "Footer Text", type: "text", default: "Don't have an account?", description: "Prompt above the sign-up link." },
       { key: "footerLinkText", label: "Footer Link", type: "text", default: "Sign up", description: "The gradient-filled link text." },
-      { key: "videoSrc", label: "Video URL", type: "text", default: "https://cdn.midjourney.com/video/71048e88-d8e6-470e-88ef-555c01eacb12/0.mp4", description: "Clip used for both the backdrop and the card panel." },
+      { key: "videoSrc", label: "Video URL", type: "text", default: "/aurora-login-card/aurora.mp4", description: "Clip used for both the backdrop and the card panel." },
       { key: "accentFrom", label: "Accent Start", type: "color", default: "#FF512F", description: "First stop of the sunset gradient." },
       { key: "accentTo", label: "Accent End", type: "color", default: "#F09819", description: "Second stop of the sunset gradient." },
       { key: "cardBackground", label: "Card Background", type: "color", default: "#ffffff", description: "Fill behind the form." },
