@@ -53,7 +53,7 @@ export function MonoRoundedCandlestickChart({
   return (
     <div
       className={`relative w-full rounded-[24px] transition-all duration-300 group flex flex-col justify-between overflow-hidden p-4 sm:p-5 ${
-        compact ? 'h-[220px] sm:h-[268px]' : 'min-h-[290px]'
+        compact ? 'h-[220px] sm:h-[268px]' : 'h-[290px]'
       } ${
         isDark
           ? 'bg-panel shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]'

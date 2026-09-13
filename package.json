@@ -1,6 +1,6 @@
 {
   "name": "spark-ui-registry",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "bin": {
     "spark-ui-registry": "cli/index.mjs",
     "spark-ui": "cli/index.mjs"
@@ -42,9 +42,10 @@
     "typescript": "^5"
   },
   "description": "Animated React + TypeScript components, copied into your project.",
+  "homepage": "https://spark-ui-cyan.vercel.app",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/himavamsi12/Spark-UI.git"
+    "url": "git+https://github.com/himavamsi12/spark-ui.git"
   },
   "license": "UNLICENSED",
   "keywords": [
@@ -54,5 +55,8 @@
     "gsap",
     "cli",
     "mcp"
-  ]
+  ],
+  "bugs": {
+    "url": "https://github.com/himavamsi12/spark-ui/issues"
+  }
 }

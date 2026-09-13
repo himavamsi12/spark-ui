@@ -114,6 +114,7 @@ const fontVars = [
   .join(" ");
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://spark-ui-cyan.vercel.app"),
   title: "Spark UI | Free Animated component library for modern websites",
   description:
     "The largest free animated component library for building modern websites. Copy code, use in Framer, or connect through MCP.",

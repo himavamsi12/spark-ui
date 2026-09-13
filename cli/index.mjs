@@ -15,7 +15,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 
-const DEFAULT_REGISTRY = process.env.SPARK_UI_REGISTRY ?? "https://sparkui-chi.vercel.app";
+const DEFAULT_REGISTRY = process.env.SPARK_UI_REGISTRY ?? "https://spark-ui-cyan.vercel.app";
 
 const c = {
   dim: (s) => `\x1b[2m${s}\x1b[0m`,

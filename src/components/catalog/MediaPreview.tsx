@@ -7,6 +7,18 @@ import { ORIGINAL_COMPONENTS } from "@/components/originals";
 /** Width full-page originals are laid out at before being shrunk into a card. */
 const STAGE_WIDTH = 1280;
 
+/**
+ * Mount and unmount use different distances on purpose. With a single margin
+ * both boundaries sit on the same line, so parking the scroll there mounts and
+ * unmounts the same component over and over — and each remount re-runs its
+ * GSAP/canvas/physics setup, which is the flicker. The gap between these two
+ * gives it hysteresis. The gap is kept narrow on purpose: every preview held
+ * open is another rAF loop on the main thread, so widening it would trade one
+ * kind of stutter for another.
+ */
+const MOUNT_MARGIN = 150;
+const UNMOUNT_MARGIN = 400;
+
 export default function MediaPreview({
   entry,
   className,
@@ -30,14 +42,29 @@ export default function MediaPreview({
     const rect = el.getBoundingClientRect();
     const vh = window.innerHeight || 0;
     const vw = window.innerWidth || 0;
-    setVisible(rect.bottom > -200 && rect.top < vh + 200 && rect.right > -200 && rect.left < vw + 200);
+    const m = MOUNT_MARGIN;
+    setVisible(rect.bottom > -m && rect.top < vh + m && rect.right > -m && rect.left < vw + m);
 
-    const io = new IntersectionObserver(
-      (entries) => setVisible(entries[0]?.isIntersecting ?? false),
-      { rootMargin: "200px" }
+    // Near the viewport: mount. Only once it is well clear does the second
+    // observer take it back down again.
+    const mountIo = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) setVisible(true);
+      },
+      { rootMargin: `${MOUNT_MARGIN}px` }
     );
-    io.observe(el);
-    return () => io.disconnect();
+    const unmountIo = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0]?.isIntersecting) setVisible(false);
+      },
+      { rootMargin: `${UNMOUNT_MARGIN}px` }
+    );
+    mountIo.observe(el);
+    unmountIo.observe(el);
+    return () => {
+      mountIo.disconnect();
+      unmountIo.disconnect();
+    };
   }, []);
 
   // Several originals capture `wheel` with preventDefault to drive their own
@@ -76,7 +103,17 @@ export default function MediaPreview({
   const cardSized = CHARTS_PAGE_CATEGORIES.includes(entry.category);
   const zoom = cardSize && cardSize.w > 0 ? cardSize.w / STAGE_WIDTH : null;
   return (
-    <div ref={wrapRef} className={`relative bg-black overflow-hidden ${className ?? ""}`}>
+    <div
+      ref={wrapRef}
+      className={`relative bg-black overflow-hidden ${className ?? ""}`}
+      // Each live preview rewrites styles every frame. Without containment the
+      // browser has to consider the rest of the page when it does, so a dozen
+      // of them running at once makes scrolling stutter. `content-visibility`
+      // additionally lets it skip rendering cards that are off screen; the
+      // parent gives this element a definite size, so that costs no layout
+      // stability.
+      style={{ contain: "layout paint style", contentVisibility: "auto" }}
+    >
       {cardSized ? (
         node
       ) : (

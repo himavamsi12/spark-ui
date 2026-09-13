@@ -153,7 +153,7 @@ export default function DocsIntro({ allComponents }: { allComponents: ComponentE
 
               <p className="text-sm font-semibold text-chalk mt-6 mb-2">3. MCP</p>
               <p>Connect the registry to Claude Code or another MCP client and ask for what you need.</p>
-              <CodeBlock>{`claude mcp add --transport http spark-ui https://sparkui-chi.vercel.app/api/mcp`}</CodeBlock>
+              <CodeBlock>{`claude mcp add --transport http spark-ui https://spark-ui-cyan.vercel.app/api/mcp`}</CodeBlock>
             </Section>
 
             <Section id="next-steps" title="Next steps">
