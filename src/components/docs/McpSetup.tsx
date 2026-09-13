@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Check, Copy, Terminal } from "lucide-react";
 import Footer from "@/components/layout/Footer";
+
+const SITE_URL = "https://spark-ui-cyan.vercel.app";
 
 const TOOLS = [
   {
@@ -17,7 +19,7 @@ const TOOLS = [
   },
   {
     name: "get_component",
-    args: "slug",
+    args: "slug, props?",
     description:
       "Returns the full React + TypeScript source for one component, plus its props, npm dependencies, and the static assets it references.",
   },
@@ -55,14 +57,9 @@ function CommandRow({ command }: { command: string }) {
 }
 
 export default function McpSetup({ componentCount }: { componentCount: number }) {
-  // Starts empty so server and client agree on the first paint, then fills in.
-  // Deferred a tick so it is not a synchronous setState during mount.
-  const [origin, setOrigin] = useState("");
-  useEffect(() => {
-    const id = requestAnimationFrame(() => setOrigin(window.location.origin));
-    return () => cancelAnimationFrame(id);
-  }, []);
-
+  // The public site, not window.location.origin: these snippets are meant to be
+  // copied into a client's config, where a localhost dev URL would be useless.
+  const origin = SITE_URL;
   const url = `${origin}/api/mcp`;
   const config = `{
   "mcpServers": {
@@ -110,9 +107,9 @@ export default function McpSetup({ componentCount }: { componentCount: number })
         </p>
         <div className="flex items-center gap-2 bg-panel border border-border-soft rounded-small px-3 py-2.5">
           <code className="flex-1 min-w-0 text-xs font-mono text-accent overflow-x-auto whitespace-pre no-scrollbar">
-            {url || "/api/mcp"}
+            {url}
           </code>
-          {origin && <CopyButton text={url} />}
+          <CopyButton text={url} />
         </div>
       </section>
 
@@ -154,7 +151,7 @@ export default function McpSetup({ componentCount }: { componentCount: number })
           The same registry backs the command line, if you would rather add components yourself.
         </p>
         <div className="space-y-2">
-                    <CommandRow command="npx spark-ui-registry@latest list" />
+          <CommandRow command="npx spark-ui-registry@latest list" />
           <CommandRow command="npx spark-ui-registry@latest add cassette-menu" />
         </div>
       </section>

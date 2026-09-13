@@ -2,7 +2,7 @@
 
 import { Suspense, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Check, Code2, Copy, Eye, PanelLeft, PanelRightOpen, RotateCw, SlidersHorizontal, Terminal } from "lucide-react";
+import { ArrowLeft, Check, Code2, Copy, Eye, PanelLeft, RotateCw, SlidersHorizontal, Terminal } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Sidebar from "@/components/layout/Sidebar";
@@ -34,7 +34,6 @@ export default function ChartDetailView({
   const schema = useMemo(() => original?.controls ?? [], [original]);
 
   const [tab, setTab] = useState<"preview" | "code">("preview");
-  const [detailsOpen, setDetailsOpen] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [params, setParams] = useState<Params>(() => getOriginalDefaults(entry.slug));
   const [replayKey, setReplayKey] = useState(0);
@@ -153,16 +152,6 @@ export default function ChartDetailView({
                 </button>
               )}
               <span className="w-px h-5 bg-border mx-0.5" />
-              <button
-                onClick={() => setDetailsOpen((o) => !o)}
-                aria-pressed={detailsOpen}
-                aria-label="Install and props"
-                title="Install and props"
-                className={`p-2 rounded-pills transition-colors ${detailsOpen ? "text-chalk bg-card" : "text-pearl hover:text-chalk"}`}
-              >
-                <PanelRightOpen size={14} />
-              </button>
-              <span className="w-px h-5 bg-border mx-0.5" />
               <ComponentActions entry={entry} snippet={snippet} />
             </div>
           </div>
@@ -223,7 +212,7 @@ export default function ChartDetailView({
             </pre>
           )}
 
-          {detailsOpen && (
+          {(
             <div className="mt-8 flex flex-col gap-6">
               <ComponentDelivery slug={entry.slug} />
 

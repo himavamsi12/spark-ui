@@ -9,6 +9,24 @@ export const dynamic = "force-dynamic";
 const SERVER_INFO = { name: "spark-ui", version: "1.0.0" };
 const PROTOCOL_VERSION = "2025-06-18";
 
+// The catalogue is public and read-only, so any origin may call it. Without
+// these, browser-based MCP clients (the web Inspector, for one) fail preflight.
+const CORS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "content-type, accept, authorization, mcp-protocol-version, mcp-session-id, last-event-id",
+  "Access-Control-Expose-Headers": "mcp-session-id",
+  "Access-Control-Max-Age": "86400",
+};
+
+function json(body: unknown, status?: number) {
+  return NextResponse.json(body, { status, headers: CORS });
+}
+
+function empty(status: number) {
+  return new NextResponse(null, { status, headers: CORS });
+}
+
 const TOOLS = [
   {
     name: "list_components",
@@ -173,7 +191,7 @@ export async function POST(request: Request) {
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ jsonrpc: "2.0", id: null, error: { code: -32700, message: "Parse error" } }, { status: 400 });
+    return json({ jsonrpc: "2.0", id: null, error: { code: -32700, message: "Parse error" } }, 400);
   }
 
   const origin = new URL(request.url).origin;
@@ -181,16 +199,21 @@ export async function POST(request: Request) {
   // A batch is allowed by JSON-RPC; notifications drop out of the response.
   if (Array.isArray(body)) {
     const results = (await Promise.all(body.map((m) => handle(m, origin)))).filter(Boolean);
-    return results.length ? NextResponse.json(results) : new NextResponse(null, { status: 204 });
+    return results.length ? json(results) : empty(204);
   }
 
   const result = await handle(body as Parameters<typeof handle>[0], origin);
-  return result ? NextResponse.json(result) : new NextResponse(null, { status: 204 });
+  return result ? json(result) : empty(204);
+}
+
+/** Preflight for browser-based clients. */
+export async function OPTIONS() {
+  return empty(204);
 }
 
 /** Lets people sanity-check the endpoint in a browser. */
 export async function GET() {
-  return NextResponse.json({
+  return json({
     ...SERVER_INFO,
     protocolVersion: PROTOCOL_VERSION,
     transport: "http",
