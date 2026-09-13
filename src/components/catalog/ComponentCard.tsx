@@ -31,7 +31,7 @@ export default function ComponentCard({
     >
       <div className="relative aspect-video bg-void overflow-hidden">
         <MediaPreview entry={entry} className="w-full h-full" still={still} />
-        <div className="absolute top-2 right-2 bg-void/60 backdrop-blur border border-pearl/10 text-[10px] font-medium text-pearl/80 px-2 py-0.5 rounded-pills">
+        <div className="absolute top-2 right-2 bg-void/85 border border-pearl/10 text-[10px] font-medium text-pearl/80 px-2 py-0.5 rounded-pills">
           Free
         </div>
       </div>

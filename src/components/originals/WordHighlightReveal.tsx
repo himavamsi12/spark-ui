@@ -156,11 +156,11 @@ export default function WordHighlightReveal({
                 ? 1
                 : (revealProgress - adjustedStart) / duration;
 
-          word.style.opacity = String(wordProgress);
+          setStyle(word, "opacity", String(wordProgress));
 
           const backgroundFadeStart = wordProgress >= 0.9 ? (wordProgress - 0.9) / 0.1 : 0;
           const backgroundOpacity = Math.max(0, 1 - backgroundFadeStart);
-          word.style.backgroundColor = `rgba(${bg}, ${backgroundOpacity})`;
+          setStyle(word, "backgroundColor", `rgba(${bg}, ${backgroundOpacity})`);
 
           // The word itself only appears in the last tenth of its pill's life,
           // which is what makes it read as surfacing rather than fading in.
@@ -169,10 +169,10 @@ export default function WordHighlightReveal({
             wordProgress >= textRevealThreshold
               ? (wordProgress - textRevealThreshold) / (1 - textRevealThreshold)
               : 0;
-          (wordText as HTMLElement).style.opacity = String(Math.pow(textRevealProgress, 0.5));
+          setStyle(wordText as HTMLElement, "opacity", String(Math.pow(textRevealProgress, 0.5)));
         } else {
           const reverseProgress = (progress - 0.7) / 0.3;
-          word.style.opacity = "1";
+          setStyle(word, "opacity", "1");
           const targetTextOpacity = 1;
 
           const reverseOverlapWords = 5;
@@ -194,16 +194,26 @@ export default function WordHighlightReveal({
                 : (reverseProgress - reverseAdjustedStart) / reverseDuration;
 
           if (reverseWordProgress > 0) {
-            (wordText as HTMLElement).style.opacity = String(
-              targetTextOpacity * (1 - reverseWordProgress),
-            );
-            word.style.backgroundColor = `rgba(${bg}, ${reverseWordProgress})`;
+            setStyle(wordText as HTMLElement, "opacity", String(targetTextOpacity * (1 - reverseWordProgress)));
+            setStyle(word, "backgroundColor", `rgba(${bg}, ${reverseWordProgress})`);
           } else {
-            (wordText as HTMLElement).style.opacity = String(targetTextOpacity);
-            word.style.backgroundColor = `rgba(${bg}, 0)`;
+            setStyle(wordText as HTMLElement, "opacity", String(targetTextOpacity));
+            setStyle(word, "backgroundColor", `rgba(${bg}, 0)`);
           }
         }
       });
+    }
+
+    // Every word's styles are recomputed each frame, but most frames change
+    // few or none of them (a finished passage is static). Skipping identical
+    // writes spares the browser a style and paint pass over every pill.
+    const lastStyle = new WeakMap<HTMLElement, Record<string, string>>();
+    function setStyle(el: HTMLElement, prop: "opacity" | "backgroundColor", value: string) {
+      let cache = lastStyle.get(el);
+      if (!cache) lastStyle.set(el, (cache = {}));
+      if (cache[prop] === value) return;
+      cache[prop] = value;
+      el.style[prop] = value;
     }
 
     function onWheel(e: WheelEvent) {

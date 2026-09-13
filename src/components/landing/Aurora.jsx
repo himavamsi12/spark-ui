@@ -134,10 +134,12 @@ export default function Aurora(props) {
     const ctn = ctnDom.current;
     if (!ctn) return;
 
+    // No antialiasing: the shader is a soft full-screen gradient with no edges,
+    // so MSAA only adds GPU cost.
     const renderer = new Renderer({
       alpha: true,
       premultipliedAlpha: true,
-      antialias: true
+      antialias: false
     });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
@@ -185,6 +187,10 @@ export default function Aurora(props) {
     ctn.appendChild(gl.canvas);
 
     let animateId = 0;
+    // Color stops only get re-parsed when they actually change. Parsing them
+    // every frame allocated fresh objects 60 times a second, and the resulting
+    // garbage collection showed up as periodic hitches while scrolling.
+    let stopsKey = '';
     const update = t => {
       animateId = requestAnimationFrame(update);
       const { time = t * 0.01, speed = 1.0 } = propsRef.current;
@@ -193,18 +199,34 @@ export default function Aurora(props) {
       program.uniforms.uBlend.value = propsRef.current.blend ?? blend;
       program.uniforms.uLightMode.value = (propsRef.current.lightMode ?? lightMode) ? 1 : 0;
       const stops = propsRef.current.colorStops ?? colorStops;
-      program.uniforms.uColorStops.value = stops.map(hex => {
-        const c = new Color(hex);
-        return [c.r, c.g, c.b];
-      });
+      const key = stops.join(',');
+      if (key !== stopsKey) {
+        stopsKey = key;
+        program.uniforms.uColorStops.value = stops.map(hex => {
+          const c = new Color(hex);
+          return [c.r, c.g, c.b];
+        });
+      }
       renderer.render({ scene: mesh });
     };
-    animateId = requestAnimationFrame(update);
+
+    // Only animate while on screen. The page has two of these, and both used to
+    // keep rendering full-size WebGL frames after being scrolled out of view.
+    const start = () => {
+      if (!animateId) animateId = requestAnimationFrame(update);
+    };
+    const stop = () => {
+      cancelAnimationFrame(animateId);
+      animateId = 0;
+    };
+    const io = new IntersectionObserver(([entry]) => (entry.isIntersecting ? start() : stop()), { rootMargin: '100px' });
+    io.observe(ctn);
 
     resize();
 
     return () => {
-      cancelAnimationFrame(animateId);
+      io.disconnect();
+      stop();
       window.removeEventListener('resize', resize);
       if (ctn && gl.canvas.parentNode === ctn) {
         ctn.removeChild(gl.canvas);

@@ -432,7 +432,35 @@ export default function PortraitOrbit({
     root.addEventListener("mouseleave", onMouseLeave);
 
     let raf = 0;
+    // Once the pointer has left and every card has eased back to rest, each
+    // frame would re-apply the same 3D transforms to the ring and all its
+    // cards. Skip those frames; any pointer movement wakes it up again.
+    const settled = () => {
+      const eps = 0.01;
+      const p = parallaxState;
+      if (Math.abs(p.targetX - p.currentX) > eps || Math.abs(p.targetY - p.currentY) > eps || Math.abs(p.targetZ - p.currentZ) > eps) return false;
+      return transformState.every(
+        (st) =>
+          Math.abs(st.targetRotation - st.currentRotation) < eps &&
+          Math.abs(st.targetScale - st.currentScale) < 0.0005 &&
+          Math.abs(st.targetX - st.currentX) < eps &&
+          Math.abs(st.targetY - st.currentY) < eps,
+      );
+    };
+    let restingApplied = false;
+
     function animate() {
+      if (!isPreviewActive && !isTransitioning && settled()) {
+        // Apply the exact rest values once, then idle.
+        if (!restingApplied) {
+          restingApplied = true;
+        } else {
+          raf = requestAnimationFrame(animate);
+          return;
+        }
+      } else {
+        restingApplied = false;
+      }
       if (!isPreviewActive && !isTransitioning) {
         parallaxState.currentX += (parallaxState.targetX - parallaxState.currentX) * config.lerpFactor;
         parallaxState.currentY += (parallaxState.targetY - parallaxState.currentY) * config.lerpFactor;

@@ -10,7 +10,8 @@ const ASCII_CHARS = "........:::=+xX#0369";
 const FONT_SIZE = 18;
 const CELL_SIZE = 20;
 const ASCII_COLUMNS = 80;
-const DPR = 2;
+/** Upper bound for the canvas pixel ratio; the real ratio is used below it. */
+const MAX_DPR = 2;
 
 type Cell = { col: number; row: number; char: string; highlightEndTime: number };
 type Hand = { canvas: HTMLCanvasElement; cells: Map<string, Cell>; cellList: Cell[]; rows: number };
@@ -88,6 +89,11 @@ export default function AsciiHandFooter({
 
     const hands: Hand[] = [];
     const rafIds: number[] = [];
+    const DPR = Math.min(window.devicePixelRatio || 1, MAX_DPR);
+    // Nothing changes on screen unless a cluster is lit, so the glyphs are only
+    // redrawn while one is fading. Redrawing thousands of characters on both
+    // hands every frame regardless kept the page's main thread busy full-time.
+    let busyUntil = 0;
     const cleanupFns: (() => void)[] = [];
 
     const setupHand = (image: HTMLImageElement) => {
@@ -110,8 +116,15 @@ export default function AsciiHandFooter({
       const canvasWidth = ASCII_COLUMNS * CELL_SIZE;
       const canvasHeight = rows * CELL_SIZE;
 
+      const handIndex = rafIds.length;
+      rafIds.push(0);
+      let drawn = false;
       const render = () => {
+        rafIds[handIndex] = requestAnimationFrame(render);
         const now = Date.now();
+        // One extra pass after the last highlight expires clears it away.
+        if (drawn && now > busyUntil + 50) return;
+        drawn = true;
         ctx.clearRect(0, 0, canvasWidth, canvasHeight);
         for (const cell of cellList) {
           const x = cell.col * CELL_SIZE;
@@ -124,8 +137,6 @@ export default function AsciiHandFooter({
           ctx.fillStyle = isHighlighted ? "#0f0f0f" : charColor;
           ctx.fillText(cell.char, x + CELL_SIZE / 2, y + baselineOffset);
         }
-        const id = requestAnimationFrame(render);
-        rafIds.push(id);
       };
       render();
       return { canvas, cells, cellList, rows };
@@ -141,6 +152,7 @@ export default function AsciiHandFooter({
     const highlightCluster = (cells: Map<string, Cell>, startCell: Cell) => {
       const now = Date.now();
       startCell.highlightEndTime = now + 300;
+      busyUntil = Math.max(busyUntil, now + 300 + 10 * 10);
       const steps = Math.floor(Math.random() * 10) + 1;
       const litCells = [startCell];
       let current = startCell;

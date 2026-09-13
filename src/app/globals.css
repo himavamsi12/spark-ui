@@ -163,6 +163,15 @@ input[type="color"].swatch::-moz-color-swatch {
   border-radius: 6px;
 }
 
+@keyframes sparkPreviewIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes sparkThunderReveal {
   0% {
     height: 0px;

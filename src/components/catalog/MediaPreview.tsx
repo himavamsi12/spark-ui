@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { CHARTS_PAGE_CATEGORIES, type ComponentEntry } from "@/lib/types";
-import { ORIGINAL_COMPONENTS } from "@/components/originals";
+import { ORIGINAL_COMPONENTS, ORIGINAL_LOADERS } from "@/components/originals";
 
 /** Width full-page originals are laid out at before being shrunk into a card. */
 const STAGE_WIDTH = 1280;
@@ -18,6 +18,45 @@ const STAGE_WIDTH = 1280;
  */
 const MOUNT_MARGIN = 150;
 const UNMOUNT_MARGIN = 400;
+/**
+ * Previews shown as a still image instead of the live component. Reserved for
+ * components too expensive to run beside a grid of others: Fluid Particle
+ * Field alone held the Components page to ~30fps, and 60fps without it. The
+ * live version still runs on its own page.
+ */
+const STILL_PREVIEWS: Record<string, string> = {
+  "fluid-particle-field": "/fluid-particle-field/poster.jpg",
+};
+
+/** How far ahead a card's component code starts downloading, without mounting. */
+const PRELOAD_MARGIN = 1200;
+
+/**
+ * Canvas and WebGL previews size their backing store from devicePixelRatio.
+ * Laid out on the 1280px stage and zoomed down, a retina screen would have
+ * them drawing a 2560px-wide canvas to show a ~600px thumbnail, four times the
+ * pixels of the card itself, which is what made the grid stutter. While any
+ * live preview is mounted, report a ratio of 1: the thumbnail looks the same
+ * and costs what it did before the stage existed. The real value comes back
+ * once the last preview unmounts, so component pages keep full resolution.
+ */
+let livePreviews = 0;
+let capped = false;
+let savedDpr: PropertyDescriptor | undefined;
+function capPixelRatio() {
+  if (livePreviews++ > 0 || window.devicePixelRatio <= 1) return;
+  savedDpr = Object.getOwnPropertyDescriptor(window, "devicePixelRatio");
+  Object.defineProperty(window, "devicePixelRatio", { configurable: true, get: () => 1 });
+  capped = true;
+}
+function releasePixelRatio() {
+  livePreviews = Math.max(0, livePreviews - 1);
+  if (livePreviews > 0 || !capped) return;
+  if (savedDpr) Object.defineProperty(window, "devicePixelRatio", savedDpr);
+  else delete (window as { devicePixelRatio?: number }).devicePixelRatio;
+  savedDpr = undefined;
+  capped = false;
+}
 
 export default function MediaPreview({
   entry,
@@ -59,25 +98,27 @@ export default function MediaPreview({
       },
       { rootMargin: `${UNMOUNT_MARGIN}px` }
     );
+    // Fetch the component's code a screen or so early, so by the time the card
+    // mounts it renders straight away rather than sitting empty while its
+    // chunk downloads.
+    const preloadIo = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          if (!STILL_PREVIEWS[entry.slug]) ORIGINAL_LOADERS[entry.slug]?.().catch(() => {});
+          preloadIo.disconnect();
+        }
+      },
+      { rootMargin: `${PRELOAD_MARGIN}px` }
+    );
     mountIo.observe(el);
     unmountIo.observe(el);
+    preloadIo.observe(el);
     return () => {
       mountIo.disconnect();
       unmountIo.disconnect();
+      preloadIo.disconnect();
     };
-  }, []);
-
-  // Several originals capture `wheel` with preventDefault to drive their own
-  // scroll-linked progress. That is correct on their detail page, but inside a
-  // card it swallows the page scroll. A capture-phase listener here runs before
-  // any descendant's handler, so the wheel never reaches them in a thumbnail.
-  useEffect(() => {
-    const el = wrapRef.current;
-    if (!el) return;
-    const block = (e: WheelEvent) => e.stopPropagation();
-    el.addEventListener("wheel", block, { capture: true });
-    return () => el.removeEventListener("wheel", block, { capture: true });
-  }, []);
+  }, [entry.slug]);
 
   useEffect(() => {
     const el = wrapRef.current;
@@ -89,11 +130,32 @@ export default function MediaPreview({
     return () => ro.disconnect();
   }, []);
 
-  const Comp = ORIGINAL_COMPONENTS[entry.slug];
+  const stillSrc = STILL_PREVIEWS[entry.slug];
+  const Comp = stillSrc ? undefined : ORIGINAL_COMPONENTS[entry.slug];
+  const live = Boolean(Comp && visible);
+
+  // Must run before the component's own effects read the ratio, hence a
+  // layout effect on this parent, which fires ahead of the child's effects.
+  useLayoutEffect(() => {
+    if (!live) return;
+    capPixelRatio();
+    return releasePixelRatio;
+  }, [live]);
   // Only mount the live component once it is actually near the viewport, and
   // leave it un-animated for `still` thumbnails. Mounting every original at
   // once (each with its own rAF/canvas/WebGL loop) saturates the main thread.
-  const node = Comp && visible && <Comp {...entry.defaults} autoPlay={!still} />;
+  // Fades in rather than snapping from an empty box to a live animation.
+  const node = Comp && visible && (
+    // pointer-events: none keeps previews out of the page's scrolling. About
+    // twenty originals register non-passive wheel listeners to drive their own
+    // scroll effects; while the pointer is over one, the browser cannot scroll
+    // the page until the (busy) main thread answers each wheel event, which is
+    // what made scrolling the grid jerk. Elements that cannot be hit-tested
+    // don't block scrolling, and the card around a preview is a link anyway.
+    <div className="pointer-events-none h-full w-full" style={{ animation: "sparkPreviewIn 280ms ease-out both" }}>
+      <Comp {...entry.defaults} autoPlay={!still} />
+    </div>
+  );
   // Charts and widgets are designed at card size. Full-page originals are
   // not: squeezed into a ~600px card their responsive layouts collapse into
   // the mobile breakpoint and overlap. Lay those out on a desktop-width stage
@@ -101,6 +163,14 @@ export default function MediaPreview({
   // Components that measure with getBoundingClientRect must convert back to
   // layout pixels themselves, since rects come back in zoomed pixels.
   const cardSized = CHARTS_PAGE_CATEGORIES.includes(entry.category);
+  if (stillSrc) {
+    return (
+      <div ref={wrapRef} className={`relative bg-black overflow-hidden ${className ?? ""}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={stillSrc} alt="" loading="lazy" decoding="async" draggable={false} className="h-full w-full object-cover" />
+      </div>
+    );
+  }
   const zoom = cardSize && cardSize.w > 0 ? cardSize.w / STAGE_WIDTH : null;
   return (
     <div

@@ -203,6 +203,10 @@ export default function FluidParticleField({
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       width = root!.clientWidth;
       height = root!.clientHeight;
+      // Shown well below its layout size (a zoomed-down grid thumbnail), a
+      // half-resolution canvas still has more pixels than are displayed.
+      const onScreen = root!.getBoundingClientRect().width;
+      if (width > 0 && onScreen > 0 && onScreen / width < 0.6) dpr = Math.min(dpr, 0.5);
       canvas!.width = Math.max(1, Math.round(width * dpr));
       canvas!.height = Math.max(1, Math.round(height * dpr));
       canvas!.style.width = `${width}px`;
@@ -349,31 +353,45 @@ export default function FluidParticleField({
       }
     }
 
-    function drawParticle(p: Particle, size: number) {
+    // Every particle shares one colour, so they are all traced into a single
+    // path and filled once. Drawing them one by one (save, translate, rotate,
+    // fill, restore for each of ~1400 shapes) was most of the frame's cost.
+    function traceParticle(p: Particle, size: number) {
       // Drawn half a step behind, which smooths the jitter of a stiff solver.
-      const renderX = (p.lastX + p.x) * 0.5;
-      const renderY = (p.lastY + p.y) * 0.5;
-
-      ctx!.save();
-      ctx!.translate(renderX, renderY);
-      ctx!.rotate(p.rotation);
-      ctx!.beginPath();
-      if (p.shape === "triangle") {
-        ctx!.moveTo(-size / 2, size / 2);
-        ctx!.lineTo(size / 2, size / 2);
-        ctx!.lineTo(0, -size / 2);
-        ctx!.closePath();
-      } else if (p.shape === "square") {
-        ctx!.rect(-size / 2, -size / 2, size, size);
-      } else {
-        ctx!.arc(0, 0, size / 2, 0, Math.PI * 2);
+      const x = (p.lastX + p.x) * 0.5;
+      const y = (p.lastY + p.y) * 0.5;
+      const h = size / 2;
+      const c = ctx!;
+      if (p.shape === "circle") {
+        c.moveTo(x + h, y);
+        c.arc(x, y, h, 0, Math.PI * 2);
+        return;
       }
-      ctx!.fill();
-      ctx!.restore();
+      const cos = Math.cos(p.rotation);
+      const sin = Math.sin(p.rotation);
+      // Rotates a local point (lx, ly) about the particle centre.
+      const px = (lx: number, ly: number) => x + lx * cos - ly * sin;
+      const py = (lx: number, ly: number) => y + lx * sin + ly * cos;
+      // All shapes wind clockwise, like arc(): in one shared path, overlapping
+      // shapes of opposite winding would cancel out and leave holes.
+      if (p.shape === "triangle") {
+        c.moveTo(px(-h, h), py(-h, h));
+        c.lineTo(px(0, -h), py(0, -h));
+        c.lineTo(px(h, h), py(h, h));
+      } else {
+        c.moveTo(px(-h, -h), py(-h, -h));
+        c.lineTo(px(h, -h), py(h, -h));
+        c.lineTo(px(h, h), py(h, h));
+        c.lineTo(px(-h, h), py(-h, h));
+      }
+      c.closePath();
     }
 
     let last = performance.now();
     let smoothDt = 1 / 60;
+    let cellHead = new Int32Array(0);
+    let nextInCell = new Int32Array(0);
+    let particleCell = new Int32Array(0);
 
     function frame(now: number) {
       const cfg = configRef.current;
@@ -406,18 +424,26 @@ export default function FluidParticleField({
 
       const size = cfg.particleSize;
       const spacing = size * cfg.spacingFactor;
-      // Numeric keys: building and splitting a string key per particle per
-      // frame is pure overhead in a loop this hot.
-      const grid = new Map<number, number[]>();
-      const STRIDE = 4096;
-
+      // Bucket particles into a spatial grid of cells one spacing wide, stored
+      // as linked lists in typed arrays that are reused between frames. The
+      // previous Map of arrays was rebuilt every frame, and that allocation
+      // and garbage collection kept the main thread busy.
+      const gridCols = Math.max(1, Math.ceil(width / spacing) + 2);
+      const gridRows = Math.max(1, Math.ceil(height / spacing) + 2);
+      const cellCount = gridCols * gridRows;
+      if (cellHead.length < cellCount) cellHead = new Int32Array(cellCount);
+      if (nextInCell.length < particles.length) nextInCell = new Int32Array(particles.length);
+      if (particleCell.length < particles.length) particleCell = new Int32Array(particles.length);
+      cellHead.fill(-1, 0, cellCount);
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
         update(p, dt, cfg, size);
-        const key = (Math.floor(p.x / spacing) + 2048) * STRIDE + (Math.floor(p.y / spacing) + 2048);
-        const cell = grid.get(key);
-        if (cell) cell.push(i);
-        else grid.set(key, [i]);
+        const cx = Math.min(gridCols - 1, Math.max(0, Math.floor(p.x / spacing) + 1));
+        const cy = Math.min(gridRows - 1, Math.max(0, Math.floor(p.y / spacing) + 1));
+        const cell = cy * gridCols + cx;
+        particleCell[i] = cell;
+        nextInCell[i] = cellHead[cell];
+        cellHead[cell] = i;
       }
 
       // Only neighbouring cells are tested, which is what keeps a few hundred
@@ -431,24 +457,28 @@ export default function FluidParticleField({
       const passes = Math.max(1, Math.round(cfg.relaxPasses));
       for (let pass = 0; pass < passes; pass++) {
         const accumulate = pass === passes - 1;
-        grid.forEach((cell, key) => {
-          for (let dx = -1; dx <= 1; dx++) {
-            for (let dy = -1; dy <= 1; dy++) {
-              const neighbour = grid.get(key + dx * STRIDE + dy);
-              if (!neighbour) continue;
-              for (let ci = 0; ci < cell.length; ci++) {
-                const i = cell[ci];
-                for (let nj = 0; nj < neighbour.length; nj++) {
-                  const j = neighbour[nj];
-                  if (i < j) interact(particles[i], particles[j], size, spacing, accumulate);
-                }
+        // Each unordered pair is visited once: j is only taken when i < j.
+        for (let i = 0; i < particles.length; i++) {
+          const cell = particleCell[i];
+          const cx = cell % gridCols;
+          const cy = (cell - cx) / gridCols;
+          for (let dy = -1; dy <= 1; dy++) {
+            const ny = cy + dy;
+            if (ny < 0 || ny >= gridRows) continue;
+            for (let dx = -1; dx <= 1; dx++) {
+              const nx = cx + dx;
+              if (nx < 0 || nx >= gridCols) continue;
+              for (let j = cellHead[ny * gridCols + nx]; j !== -1; j = nextInCell[j]) {
+                if (i < j) interact(particles[i], particles[j], size, spacing, accumulate);
               }
             }
           }
-        });
+        }
       }
 
-      for (let i = 0; i < particles.length; i++) drawParticle(particles[i], size);
+      ctx!.beginPath();
+      for (let i = 0; i < particles.length; i++) traceParticle(particles[i], size);
+      ctx!.fill();
 
       mousePrevX = mouseX;
       mousePrevY = mouseY;

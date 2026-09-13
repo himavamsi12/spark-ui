@@ -14,20 +14,9 @@ import gsap from "gsap";
  * would break that, so depth is read purely from the overlap and the shared angle.
  */
 
-const COVERS = [
-  "/accordion-frames/spotlight-3.jpg",
-  "/ripple-slider/slider-img-1.jpg",
-  "/circular-gallery/img1.jpg",
-  "/clip-mask-transition/img1.jpg",
-  "/perpetual-slider/slide-img-1.jpg",
-  "/portrait-orbit/img2.jpeg",
-  "/magnetic-marquee/marquee-img-1.jpg",
-  "/grid-wipe-transition/img1.jpg",
-  "/counter-reveal/img1.jpg",
-  "/grid-shutter/img2.jpg",
-  "/scroll-tunnel/img1.jpg",
-  "/list-hover-cards/item_10_card_1.jpg",
-];
+// Small copies of each component's cover. The deck shows 36 cards at 300px,
+// and decoding the full-size originals (up to 2400px) stalled the page load.
+const COVERS = Array.from({ length: 12 }, (_, i) => `/hero-deck/cover-${String(i + 1).padStart(2, "0")}.jpg`);
 
 // Same order as COVERS - clicking a card jumps to its real component page.
 const COVER_SLUGS = [
@@ -129,9 +118,16 @@ export default function ComponentFlowHero({ className }: { className?: string })
     render();
 
     let hoverPaused = false;
+    // Stop drifting once the deck is scrolled out of view; it otherwise kept
+    // moving 36 cards every frame for the rest of the visit.
+    let offscreen = false;
+    const visibilityIo = new IntersectionObserver(([entry]) => {
+      offscreen = !entry.isIntersecting;
+    });
+    visibilityIo.observe(container);
 
     const ticker = (_time: number, deltaMs: number) => {
-      if (hoverPaused) return;
+      if (hoverPaused || offscreen) return;
       proxy.p += deltaMs / 1000 / 15; // ~70px/s along the diagonal, same pace as before
       render();
     };
@@ -226,6 +222,7 @@ export default function ComponentFlowHero({ className }: { className?: string })
       window.removeEventListener("resize", onResize);
       if (rafId !== null) cancelAnimationFrame(rafId);
       gsap.ticker.remove(ticker);
+      visibilityIo.disconnect();
       gsap.killTweensOf(fallEls);
       gsap.killTweensOf(liftEls);
     };
@@ -308,6 +305,7 @@ export default function ComponentFlowHero({ className }: { className?: string })
                   src={COVERS[i % COVERS.length]}
                   alt=""
                   draggable={false}
+                  decoding="async"
                   className="w-full h-full object-cover"
                 />
               </div>
