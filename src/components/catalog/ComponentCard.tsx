@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Eye } from "lucide-react";
 import MediaPreview from "./MediaPreview";
 import type { ComponentEntry } from "@/lib/types";
@@ -17,18 +18,11 @@ export default function ComponentCard({
   still?: boolean;
 }) {
   return (
-    <a
-      href={`/components/${entry.slug}`}
-      onClick={(e) => {
-        // Live previews contain their own controls (toggles, tabs); using
-        // those should work in place, not open the detail page.
-        const target = e.target as HTMLElement;
-        if (target.closest('button, input, select, textarea, label, [role="button"]')) {
-          e.preventDefault();
-        }
-      }}
-      className="group relative block rounded-cards overflow-hidden border border-border bg-card hover:border-pearl/30 transition-colors"
-    >
+    // A container with a link stretched over it, rather than one big <a>:
+    // several previews render links of their own (menus, a "Sign up"), and a
+    // link inside a link is invalid HTML that React flags as a hydration error.
+    <div className="group relative block rounded-cards overflow-hidden border border-border bg-card hover:border-pearl/30 transition-colors">
+      <Link href={`/components/${entry.slug}`} aria-label={entry.name} className="absolute inset-0 z-10" />
       <div className="relative aspect-video bg-void overflow-hidden">
         <MediaPreview entry={entry} className="w-full h-full" still={still} />
         <div className="absolute top-2 right-2 bg-void/85 border border-pearl/10 text-[10px] font-medium text-pearl/80 px-2 py-0.5 rounded-pills">
@@ -42,6 +36,6 @@ export default function ComponentCard({
           {formatViews(entry.views)}
         </span>
       </div>
-    </a>
+    </div>
   );
 }

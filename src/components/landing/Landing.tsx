@@ -13,7 +13,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import Aurora from "./Aurora";
-import ComponentFlowHero from "./ComponentFlowHero";
+import HeroGlowWaves from "./HeroGlowWaves";
+import HeroPlayground from "./HeroPlayground";
 import CustomiseDemo from "./CustomiseDemo";
 import Footer from "@/components/layout/Footer";
 import MediaPreview from "@/components/catalog/MediaPreview";
@@ -51,61 +52,77 @@ function Tile({
 export default function Landing({
   featured,
   total,
+  playground,
+  componentCount,
+  uiKitCount,
 }: {
   featured: ComponentEntry[];
   total: number;
+  playground: ComponentEntry[];
+  componentCount: number;
+  uiKitCount: number;
 }) {
   return (
     <main className="absolute inset-0 overflow-y-auto no-scrollbar">
       {/* Hero ------------------------------------------------------------ */}
-      <section className="relative px-6 pt-28 pb-32 text-center overflow-hidden">
-        {/* The aurora bleeds up behind the transparent, blurred header
-            instead of stopping at the hero's own top edge. */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-[480px] overflow-hidden opacity-40">
-          <Aurora colorStops={["#e8730a", "#ff8a3d", "#7c2d12"]} blend={0.55} amplitude={2.4} speed={0.9} />
-          <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,var(--color-void)_92%)]" />
+      <section className="relative mb-10 flex min-h-[90dvh] flex-col justify-start px-6 pt-40 pb-10 overflow-hidden lg:mb-12 lg:pt-44">
+        {/* Soft glowing waves hang from the top, behind the header and the
+            hero, and fade out below it. */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[760px] overflow-hidden">
+          <HeroGlowWaves className="absolute inset-0" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,transparent_65%,var(--color-void)_100%)]" />
         </div>
 
-        <div className="relative max-w-3xl mx-auto">
-          <span className="inline-flex items-center gap-1.5 rounded-pills border border-border bg-panel px-3 py-1 text-xs text-pearl mb-6">
-            <Sparkles size={12} className="text-accent" />
-            {total} animated components, free to use
-          </span>
+        {/* Split hero: the pitch on the left, a live playground on the right. */}
+        <div className="relative mx-auto grid max-w-[1680px] items-center gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-12 lg:px-10">
+          <div className="text-center lg:text-left">
+            {/* Same smoked-glass treatment as the overlay header, so the glow
+                carries through the badge instead of stopping at it. */}
+            <span className="inline-flex items-center gap-1.5 rounded-pills border border-border bg-void/65 backdrop-blur-md px-3 py-1 text-xs text-pearl mb-6">
+              <Sparkles size={12} className="text-accent" />
+              {componentCount} components and {uiKitCount} UI Kit pieces, free to use
+            </span>
 
-          <h1 className="font-display font-semibold tracking-tight text-chalk leading-[1.05] text-balance" style={{ fontSize: "clamp(2.5rem,6.5vw,4.5rem)" }}>
-            A library of <span className="text-accent">animations</span>,
-            <br />
-            open on every shelf
-          </h1>
+            {/* Exactly two lines from tablet up: each line is kept whole and the
+                size scales with the column so the longer one still fits. */}
+            <h1 className="font-display font-semibold tracking-tight text-chalk leading-[1.05]" style={{ fontSize: "clamp(2.4rem,4.3vw,4.9rem)", textShadow: "0 2px 28px rgba(0,0,0,0.45)" }}>
+              <span className="sm:whitespace-nowrap">A library of animations,</span>
+              <br className="hidden sm:block" />{" "}
+              <span className="sm:whitespace-nowrap">open on every shelf</span>
+            </h1>
 
-          <p className="mt-5 text-base text-pearl leading-relaxed max-w-xl mx-auto text-balance">
-            Every component here is a book you can pull down, flip through, and take with you.
-            Production-ready React and TypeScript, tuned in the browser before you copy a line.
-          </p>
+            <p className="mt-6 text-lg text-pearl leading-relaxed max-w-2xl mx-auto lg:mx-0 text-balance" style={{ textShadow: "0 1px 12px rgba(0,0,0,0.6)" }}>
+              Production-ready React and TypeScript animations. Tune each one in the browser,
+              then copy it straight into your project.
+            </p>
 
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              href="/components"
-              className="group flex items-center gap-2 bg-chalk text-void text-sm font-medium px-5 py-2.5 rounded-pills hover:bg-pearl transition-colors shadow-[0_-1px_0_0_var(--color-iron)]"
-            >
-              Browse components
-              <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
-            </Link>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+              <Link
+                href="/components"
+                className="group flex items-center gap-2 bg-chalk text-void text-sm font-medium px-5 py-2.5 rounded-pills hover:bg-pearl transition-colors shadow-[0_-1px_0_0_var(--color-iron)]"
+              >
+                Browse components
+                <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
+              </Link>
+              <Link
+                href="/charts"
+                className="flex items-center gap-2 border border-border bg-void/40 text-pearl text-sm font-medium px-5 py-2.5 rounded-pills hover:border-pearl/40 hover:text-chalk transition-colors"
+              >
+                Explore UI Kit
+              </Link>
+            </div>
+
             <Link
               href="/mcp"
-              className="flex items-center gap-2 border border-border text-pearl text-sm font-medium px-5 py-2.5 rounded-pills hover:border-pearl/40 hover:text-chalk transition-colors"
+              className="mt-5 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-pearl"
             >
               <Plug size={14} className="text-accent" />
-              Connect via MCP
+              Or let your AI agent add them via MCP
+              <ArrowRight size={13} />
             </Link>
           </div>
-        </div>
 
-        {/* pointer-events-none because the hero's negative top margin collapses
-            into this wrapper, dragging it up over the CTAs above. The cards
-            inside re-enable pointer events for themselves. */}
-        <div className="relative mt-14 -mx-6 pointer-events-none">
-          <ComponentFlowHero className="w-full" />
+          <HeroPlayground items={playground} />
         </div>
       </section>
 
@@ -130,11 +147,12 @@ export default function Landing({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {featured.map((entry) => (
-              <Link
+              // Stretched link, not a wrapping one: previews can contain links of their own.
+              <div
                 key={entry.slug}
-                href={`/components/${entry.slug}`}
-                className="group block rounded-cards overflow-hidden border border-border hover:border-pearl/40 transition-colors bg-card"
+                className="group relative block rounded-cards overflow-hidden border border-border hover:border-pearl/40 transition-colors bg-card"
               >
+                <Link href={`/components/${entry.slug}`} aria-label={entry.name} className="absolute inset-0 z-10" />
                 <div className="aspect-video bg-void overflow-hidden">
                   <MediaPreview entry={entry} className="w-full h-full" />
                 </div>
@@ -146,7 +164,7 @@ export default function Landing({
                     {entry.category}
                   </span>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         </div>

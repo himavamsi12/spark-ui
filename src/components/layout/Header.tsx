@@ -55,7 +55,9 @@ export default function Header({
     <header
       className={`h-20 shrink-0 flex items-center justify-between px-6 z-20 ${
         overlay
-          ? "absolute top-0 inset-x-0 border-b border-white/10 bg-void/30 backdrop-blur-md"
+          ? // Sits over the hero glow: no rule of its own, just a light frost so
+            // the links keep their contrast against the brightest part of it.
+            "absolute top-0 inset-x-0 bg-void/65 backdrop-blur-md"
           : "relative border-b border-border bg-bg"
       }`}
     >
@@ -76,37 +78,37 @@ export default function Header({
             className={`px-3.5 py-1.5 rounded-pills text-sm font-medium transition-colors ${
               (item.label === "Components" && isComponents) || (item.label === "Docs" && isDocs)
                 ? "bg-slate text-chalk"
-                : "text-muted hover:text-pearl"
+                : "text-chalk hover:text-pearl"
             }`}
           >
             {item.label}
           </Link>
         ))}
-        <span className="w-1 h-1 rounded-full bg-muted mx-1" />
+        <span className="w-1 h-1 rounded-full bg-pearl/50 mx-1" />
         <Link
           href="/charts"
           className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-pills text-sm font-medium transition-colors ${
-            isCharts ? "bg-slate text-chalk" : "text-muted hover:text-pearl"
+            isCharts ? "bg-slate text-chalk" : "text-chalk hover:text-pearl"
           }`}
         >
           <LayoutGrid size={13} />
           UI Kit
         </Link>
-        <span className="w-1 h-1 rounded-full bg-muted mx-1" />
+        <span className="w-1 h-1 rounded-full bg-pearl/50 mx-1" />
         <Link
           href="/mcp"
           className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-pills text-sm font-medium transition-colors ${
-            isMcp ? "bg-slate text-chalk" : "text-muted hover:text-pearl"
+            isMcp ? "bg-slate text-chalk" : "text-chalk hover:text-pearl"
           }`}
         >
           <Plug size={13} />
           MCP
         </Link>
-        <span className="w-1 h-1 rounded-full bg-muted mx-1" />
+        <span className="w-1 h-1 rounded-full bg-pearl/50 mx-1" />
         <Link
           href="/3d-tool"
           className={`px-3.5 py-1.5 rounded-pills text-sm font-medium transition-colors ${
-            is3dTool ? "bg-slate text-chalk" : "text-muted hover:text-pearl"
+            is3dTool ? "bg-slate text-chalk" : "text-chalk hover:text-pearl"
           }`}
         >
           3D Tool
