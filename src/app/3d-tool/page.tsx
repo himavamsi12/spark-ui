@@ -1,5 +1,5 @@
-import Header from "@/components/Header";
-import ThreeDToolIntro from "@/components/ThreeDToolIntro";
+import Header from "@/components/layout/Header";
+import ThreeDToolIntro from "@/components/3d-tool/ThreeDToolIntro";
 
 export const metadata = {
   title: "3D Tool | Spark UI",

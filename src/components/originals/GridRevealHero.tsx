@@ -5,6 +5,19 @@ import gsap from "gsap";
 import { Flip } from "gsap/Flip";
 import { SplitText } from "gsap/SplitText";
 
+/** Effective CSS zoom on an untransformed element (1 unless inside a zoomed container). */
+function cssZoom(el: HTMLElement): number {
+  const layout = el.offsetWidth;
+  const visual = el.getBoundingClientRect().width;
+  return layout && visual ? visual / layout : 1;
+}
+
+/** getBoundingClientRect() in layout pixels, so rects and CSS left/top agree under zoom. */
+function layoutRect(el: Element, zoom: number) {
+  const r = el.getBoundingClientRect();
+  return { left: r.left / zoom, top: r.top / zoom, right: r.right / zoom, bottom: r.bottom / zoom, width: r.width / zoom, height: r.height / zoom };
+}
+
 gsap.registerPlugin(Flip, SplitText);
 
 export default function GridRevealHero({
@@ -42,7 +55,8 @@ export default function GridRevealHero({
     if (!root || !preloader || !grid || !marker || !titleEl || !subtitleEl) return;
 
     const rate = Math.max(0.2, speed / 100);
-    const rect = root.getBoundingClientRect();
+    const zoom = cssZoom(root);
+    const rect = { width: root.clientWidth, height: root.clientHeight };
     const maxTile = 42;
     const snapOdd = (v: number) => (v % 2 === 0 ? v - 1 : v);
     const cols = Math.max(3, snapOdd(Math.floor(rect.width / maxTile)));
@@ -84,9 +98,9 @@ export default function GridRevealHero({
     gsap.set(fadeTiles, { opacity: 0 });
     gsap.set(marker, { width: tileSize, height: tileSize });
 
-    const preloaderRect = preloader.getBoundingClientRect();
+    const preloaderRect = layoutRect(preloader, zoom);
     const offset = (tile: HTMLDivElement) => {
-      const r = tile.getBoundingClientRect();
+      const r = layoutRect(tile, zoom);
       return { left: r.left - preloaderRect.left, top: r.top - preloaderRect.top };
     };
     gsap.set(marker, offset(first));

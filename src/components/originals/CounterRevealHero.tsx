@@ -5,6 +5,19 @@ import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { CustomEase } from "gsap/CustomEase";
 
+/** Effective CSS zoom on an untransformed element (1 unless inside a zoomed container). */
+function cssZoom(el: HTMLElement): number {
+  const layout = el.offsetWidth;
+  const visual = el.getBoundingClientRect().width;
+  return layout && visual ? visual / layout : 1;
+}
+
+/** getBoundingClientRect() in layout pixels, so rects and CSS left/top agree under zoom. */
+function layoutRect(el: Element, zoom: number) {
+  const r = el.getBoundingClientRect();
+  return { left: r.left / zoom, top: r.top / zoom, right: r.right / zoom, bottom: r.bottom / zoom, width: r.width / zoom, height: r.height / zoom };
+}
+
 gsap.registerPlugin(SplitText, CustomEase);
 
 const DEFAULT_WORDS = ["Studios", "Season", "Chamber", "Archive", "Vision"];
@@ -56,7 +69,8 @@ export default function CounterRevealHero({
     if (!root || !preloader || !counterEl || !wordEl || !frame || !footer || !fade || headings.length !== 3) return;
 
     const rate = Math.max(0.2, speed / 100);
-    const rootRect = root.getBoundingClientRect();
+    const zoom = cssZoom(root);
+    const rootRect = layoutRect(root, zoom);
 
     const splits = headings.map((h, i) => {
       const split = SplitText.create(h, { type: "words", mask: "words", wordsClass: "word" });
@@ -64,7 +78,7 @@ export default function CounterRevealHero({
       return split;
     });
 
-    const frameStartRect = frame.getBoundingClientRect();
+    const frameStartRect = layoutRect(frame, zoom);
     const leftEdgeOffset = 24 - (frameStartRect.left - rootRect.left);
     gsap.set(frame, { x: leftEdgeOffset });
 
@@ -93,8 +107,9 @@ export default function CounterRevealHero({
     }
 
     function expandToFill() {
-      const frameRect = frame!.getBoundingClientRect();
-      const parentRect = root!.getBoundingClientRect();
+      const z = cssZoom(root!);
+      const frameRect = layoutRect(frame!, z);
+      const parentRect = layoutRect(root!, z);
       gsap.set(frame, {
         position: "absolute",
         top: frameRect.top - parentRect.top,

@@ -1,12 +1,9 @@
 import { notFound } from "next/navigation";
-import componentsRaw from "@/data/components.json";
-import type { ComponentEntry } from "@/lib/types";
-import Header from "@/components/Header";
-import DetailView from "@/components/DetailView";
-import OriginalDetailView from "@/components/OriginalDetailView";
+import OriginalDetailView from "@/components/detail/OriginalDetailView";
+import ChartDetailView from "@/components/detail/ChartDetailView";
 import { buildOriginalEntries } from "@/lib/originalEntries";
 
-const data = [...buildOriginalEntries(), ...(componentsRaw as ComponentEntry[])];
+const data = buildOriginalEntries();
 
 export function generateStaticParams() {
   return data.map((d) => ({ slug: d.slug }));
@@ -25,13 +22,14 @@ export default async function ComponentDetailPage({
     .filter((d) => d.category === entry.category && d.slug !== entry.slug)
     .slice(0, 8);
 
+  // Charts get a documentation-style page; everything else opens full-bleed
+  // with its toolbar above the preview and the sidebar as the only other chrome.
   return (
-    <div className="flex flex-col h-screen">
-      <Header />
-      {entry.source === "original" ? (
-        <OriginalDetailView key={entry.slug} entry={entry} similar={similar} allComponents={data} />
+    <div className="h-screen">
+      {entry.category === "Charts" ? (
+        <ChartDetailView key={entry.slug} entry={entry} allComponents={data} />
       ) : (
-        <DetailView key={entry.slug} entry={entry} similar={similar} />
+        <OriginalDetailView key={entry.slug} entry={entry} similar={similar} allComponents={data} />
       )}
     </div>
   );

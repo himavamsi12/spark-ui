@@ -4,6 +4,19 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { CustomEase } from "gsap/CustomEase";
 
+/** Effective CSS zoom on an untransformed element (1 unless inside a zoomed container). */
+function cssZoom(el: HTMLElement): number {
+  const layout = el.offsetWidth;
+  const visual = el.getBoundingClientRect().width;
+  return layout && visual ? visual / layout : 1;
+}
+
+/** getBoundingClientRect() in layout pixels, so rects and CSS left/top agree under zoom. */
+function layoutRect(el: Element, zoom: number) {
+  const r = el.getBoundingClientRect();
+  return { left: r.left / zoom, top: r.top / zoom, right: r.right / zoom, bottom: r.bottom / zoom, width: r.width / zoom, height: r.height / zoom };
+}
+
 gsap.registerPlugin(CustomEase);
 
 const ITEMS = ["Drawn And Dressed", "Sketch The Look", "Palette Of Style", "Muse In Ink", "Runway Reimagined", "Bold Brushstroke"];
@@ -94,8 +107,9 @@ export default function ListHoverCards({
     const list = listRef.current;
     const cards = cardRefs.current.filter(Boolean) as HTMLImageElement[];
     if (!list) return;
-    const listRect = list.getBoundingClientRect();
-    const itemRect = itemEl.getBoundingClientRect();
+    const zoom = cssZoom(list);
+    const listRect = layoutRect(list, zoom);
+    const itemRect = layoutRect(itemEl, zoom);
     const followY = (itemRect.top + itemRect.height / 2 - listRect.top - listRect.height / 2) * 0.75;
 
     cards.forEach((card, i) => {

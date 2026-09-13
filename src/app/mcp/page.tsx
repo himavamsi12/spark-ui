@@ -1,5 +1,5 @@
-import Header from "@/components/Header";
-import McpSetup from "@/components/McpSetup";
+import Header from "@/components/layout/Header";
+import McpSetup from "@/components/docs/McpSetup";
 import { ORIGINALS } from "@/lib/originalControls";
 import { ORIGINAL_SOURCE_FILES } from "@/lib/originalSources";
 

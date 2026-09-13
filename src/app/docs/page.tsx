@@ -1,10 +1,8 @@
-import componentsRaw from "@/data/components.json";
-import type { ComponentEntry } from "@/lib/types";
-import Header from "@/components/Header";
-import DocsIntro from "@/components/DocsIntro";
+import Header from "@/components/layout/Header";
+import DocsIntro from "@/components/docs/DocsIntro";
 import { buildOriginalEntries } from "@/lib/originalEntries";
 
-const data = [...buildOriginalEntries(), ...(componentsRaw as ComponentEntry[])];
+const data = buildOriginalEntries();
 
 export const metadata = {
   title: "Introduction | Spark UI Docs",

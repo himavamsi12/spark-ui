@@ -13,7 +13,7 @@ type GalleryItem = {
 };
 
 export default function CircularGallery({
-  centerLabel = "origin",
+  centerLabel = "spark ui",
   speed = 100,
   tiltAngle = -20,
   hoverScale = 110,
@@ -77,7 +77,8 @@ export default function CircularGallery({
 
     function measure() {
       if (!root) return;
-      const rect = root.getBoundingClientRect();
+      // Layout size, so a zoomed grid preview keeps the full-size oval.
+      const rect = { width: root.clientWidth, height: root.clientHeight };
       ovalRadiusX = rect.width * 0.3;
       ovalRadiusY = rect.height * 0.28;
       const rad = (tiltAngle * Math.PI) / 180;

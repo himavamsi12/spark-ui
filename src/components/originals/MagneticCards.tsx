@@ -3,6 +3,13 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
+/** Effective CSS zoom on an untransformed element (1 unless inside a zoomed container). */
+function cssZoom(el: HTMLElement): number {
+  const layout = el.offsetWidth;
+  const visual = el.getBoundingClientRect().width;
+  return layout && visual ? visual / layout : 1;
+}
+
 const DEFAULT_IMAGES = Array.from({ length: 4 }, (_, i) => `/magnetic-cards/card-img-${i + 1}.jpg`);
 
 // The reference's resting arrangement: each card sits at its own offset and
@@ -84,9 +91,11 @@ export default function MagneticCards({
       if (speed < 0.5) return { fx: 0, fy: 0 };
 
       const rect = container!.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2 + card.restX;
-      const cy = rect.top + rect.height / 2 + card.restY;
-      const dist = Math.sqrt((cursor.x - cx) ** 2 + (cursor.y - cy) ** 2);
+      // Cursor and rect are in on-screen pixels, rest offsets in layout ones.
+      const zoom = cssZoom(container!);
+      const cx = rect.left + rect.width / 2 + card.restX * zoom;
+      const cy = rect.top + rect.height / 2 + card.restY * zoom;
+      const dist = Math.sqrt((cursor.x - cx) ** 2 + (cursor.y - cy) ** 2) / zoom;
       if (dist > proximityRadius) return { fx: 0, fy: 0 };
 
       const weight = (1 - dist / proximityRadius) ** 3;

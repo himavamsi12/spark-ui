@@ -4,6 +4,19 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 
+/** Effective CSS zoom on an untransformed element (1 unless inside a zoomed container). */
+function cssZoom(el: HTMLElement): number {
+  const layout = el.offsetWidth;
+  const visual = el.getBoundingClientRect().width;
+  return layout && visual ? visual / layout : 1;
+}
+
+/** getBoundingClientRect() in layout pixels, so rects and CSS left/top agree under zoom. */
+function layoutRect(el: Element, zoom: number) {
+  const r = el.getBoundingClientRect();
+  return { left: r.left / zoom, top: r.top / zoom, right: r.right / zoom, bottom: r.bottom / zoom, width: r.width / zoom, height: r.height / zoom };
+}
+
 gsap.registerPlugin(SplitText);
 
 const DEFAULT_IMAGES = Array.from({ length: 6 }, (_, i) => `/magnetic-marquee/marquee-img-${i + 1}.jpg`);
@@ -92,7 +105,8 @@ export default function MagneticMarquee({
       .map((el) => SplitText.create(el as HTMLElement, { type: "lines", linesClass: "line" }));
 
     function measureGeometry() {
-      const rootRect = root!.getBoundingClientRect();
+      const zoom = cssZoom(root!);
+      const rootRect = layoutRect(root!, zoom);
       sectionHeight = rootRect.height;
       stripBaseTop = strip!.offsetTop;
       stripHeight = strip!.offsetHeight;
@@ -100,7 +114,7 @@ export default function MagneticMarquee({
 
       let blockTop = Infinity;
       textLines.forEach((line) => {
-        const r = line.el.getBoundingClientRect();
+        const r = layoutRect(line.el, zoom);
         line.restCenterY = r.top - rootRect.top + r.height / 2;
         blockTop = Math.min(blockTop, line.restCenterY - r.height / 2);
       });
@@ -125,7 +139,7 @@ export default function MagneticMarquee({
     function onMouseMove(e: MouseEvent) {
       hasPointerMoved = true;
       const bounds = root!.getBoundingClientRect();
-      const cursorY = e.clientY - bounds.top;
+      const cursorY = (e.clientY - bounds.top) / cssZoom(root!);
       const wantedY = cursorY - stripBaseTop - stripHeight / 2;
       const highestY = config.stripEdgeInset - stripBaseTop - stripHeight / 2;
       const lowestY = sectionHeight - config.stripEdgeInset - stripBaseTop - stripHeight / 2;
