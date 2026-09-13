@@ -181,8 +181,12 @@ export default function CircularGallery({
     <div ref={rootRef} className="relative w-full h-full overflow-hidden bg-black" style={{ fontFamily }}>
       <div ref={galleryRef} className="absolute inset-0" />
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 backdrop-blur border border-white/10 text-white/70 uppercase tracking-wide pointer-events-none"
-        style={{ fontSize: `calc(10px * ${scale})` }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center whitespace-nowrap rounded-full bg-white/10 backdrop-blur border border-white/10 text-white/70 uppercase tracking-wide pointer-events-none"
+        style={{
+          fontSize: `calc(10px * ${scale})`,
+          padding: `calc(7px * ${scale}) calc(14px * ${scale})`,
+          lineHeight: 1,
+        }}
       >
         {centerLabel}
       </div>

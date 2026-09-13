@@ -20,6 +20,7 @@ const NEW_COMPONENTS = [
   "dissolve-wash-hero",
   "fluid-particle-field",
   "grid-deform-video",
+  "circular-gallery",
   "block-sweep-page-transition",
   "unravel-stroke-reveal",
   "dissolve-image-reveal",
