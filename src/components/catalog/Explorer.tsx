@@ -36,7 +36,23 @@ export default function Explorer({
   // arriving and silently resetting to the default.
   const initialSort = searchParams.get("sort") as SortKey | null;
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState<string | null>(categoryTabs?.[0] ?? null);
+  // ?category= picks the opening tab, so a detail page's back link returns to
+  // the tab the visitor came from rather than always the first one.
+  const initialCategory = searchParams.get("category");
+  const [category, setCategoryState] = useState<string | null>(
+    categoryTabs ? (initialCategory && categoryTabs.includes(initialCategory) ? initialCategory : categoryTabs[0]) : null,
+  );
+  const setCategory = (next: string | null) => {
+    setCategoryState(next);
+    if (!categoryTabs) return;
+    // Keep the URL in step with the tab so the browser's back button and
+    // reloads land on it too.
+    const params = new URLSearchParams(window.location.search);
+    if (next && next !== categoryTabs[0]) params.set("category", next);
+    else params.delete("category");
+    const qs = params.toString();
+    window.history.replaceState(null, "", `${window.location.pathname}${qs ? `?${qs}` : ""}`);
+  };
   const [sort, setSort] = useState<SortKey>(
     initialSort && SORT_KEYS.includes(initialSort) ? initialSort : "trending",
   );

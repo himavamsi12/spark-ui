@@ -12,7 +12,6 @@ import {
   FileCode2,
   type LucideIcon,
 } from "lucide-react";
-import Aurora from "./Aurora";
 import HeroGlowWaves from "./HeroGlowWaves";
 import HeroPlayground from "./HeroPlayground";
 import CustomiseDemo from "./CustomiseDemo";
@@ -20,7 +19,10 @@ import Footer from "@/components/layout/Footer";
 import MediaPreview from "@/components/catalog/MediaPreview";
 import type { ComponentEntry } from "@/lib/types";
 
-/** A bento tile: icon and title on one line, then whatever proves the point. */
+/**
+ * A bento tile: icon and title on one line, then whatever proves the point.
+ * On hover a spotlight follows the pointer around the border.
+ */
 function Tile({
   icon: Icon,
   title,
@@ -34,17 +36,30 @@ function Tile({
 }) {
   return (
     <div
-      className={`group relative overflow-hidden rounded-cards border border-border bg-card p-5 flex flex-col transition-colors hover:border-pearl/25 ${className ?? ""}`}
+      onPointerMove={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
+        e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
+      }}
+      className={`group relative rounded-cards bg-border p-px ${className ?? ""}`}
     >
-      {/* Accent bloom that warms up on hover. */}
-      <div className="pointer-events-none absolute -top-16 -right-16 w-48 h-48 rounded-full bg-[var(--accent)] opacity-[0.06] blur-2xl transition-opacity duration-500 group-hover:opacity-[0.14]" />
-      <div className="relative flex items-center gap-2.5 mb-2.5">
-        <span className="w-7 h-7 rounded-medium bg-panel border border-border-soft flex items-center justify-center shrink-0">
-          <Icon size={14} className="text-accent" />
-        </span>
-        <h3 className="text-sm font-semibold text-chalk">{title}</h3>
+      {/* Border spotlight: sits in the 1px gap around the inner surface. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 rounded-cards opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{ background: "radial-gradient(260px circle at var(--mx, 50%) var(--my, 0px), var(--accent), transparent 70%)" }}
+      />
+      <div className="relative h-full overflow-hidden rounded-[calc(var(--radius-cards)-1px)] bg-card p-5 flex flex-col shadow-[inset_0_1px_0_0_rgba(255,255,255,0.03)]">
+        {/* Accent bloom that warms up on hover. */}
+        <div className="pointer-events-none absolute -top-16 -right-16 w-48 h-48 rounded-full bg-[var(--accent)] opacity-[0.06] blur-2xl transition-opacity duration-500 group-hover:opacity-[0.14]" />
+        <div className="relative flex items-center gap-2.5 mb-2.5">
+          <span className="w-7 h-7 rounded-medium bg-panel border border-border-soft flex items-center justify-center shrink-0">
+            <Icon size={14} className="text-accent" />
+          </span>
+          <h3 className="text-sm font-semibold text-chalk">{title}</h3>
+        </div>
+        <div className="relative mt-auto">{children}</div>
       </div>
-      <div className="relative mt-auto">{children}</div>
     </div>
   );
 }
@@ -171,7 +186,7 @@ export default function Landing({
       </section>
 
       {/* Features -------------------------------------------------------- */}
-      <section className="px-6 pb-20">
+      <section className="px-6 pt-12 pb-20 lg:pt-20">
         <div className="max-w-5xl mx-auto">
           <div className="flex items-end justify-between gap-6 mb-6">
             <div>
@@ -238,17 +253,20 @@ export default function Landing({
         <div
           className="max-w-5xl mx-auto relative overflow-hidden rounded-cards border border-border bg-card px-6 py-12 text-center shadow-[inset_0_1px_0_0_rgba(255,255,255,0.07)]"
         >
-          <div className="absolute inset-0 opacity-40">
-            <Aurora colorStops={["#e8730a", "#ff8a3d", "#7c2d12"]} blend={0.4} amplitude={0.8} speed={1.8} />
+          {/* The hero's glowing waves, hanging from the card's top edge and
+              fading out below the copy, so the page closes the way it opens. */}
+          <div className="pointer-events-none absolute inset-0">
+            <HeroGlowWaves className="absolute inset-0" reach={0.85} intensity={0.85} />
+            <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,transparent_45%,var(--color-card)_100%)]" />
           </div>
-          {/* Vignette so the rays read as a light source falling across the
-              card rather than an isolated streak in one corner. */}
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_25%,var(--color-void)_90%)] opacity-80" />
           <div className="relative">
-            <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-chalk text-balance">
+            <h2
+              className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-chalk text-balance"
+              style={{ textShadow: "0 2px 28px rgba(0,0,0,0.45)" }}
+            >
               Free to use, not free to make
             </h2>
-            <p className="mt-2.5 text-sm text-pearl max-w-md mx-auto text-balance">
+            <p className="mt-2.5 text-sm text-pearl max-w-md mx-auto text-balance" style={{ textShadow: "0 1px 12px rgba(0,0,0,0.6)" }}>
               No ads, no premium tier, no paywall coming later. If this saved you time, a chai keeps it going.
             </p>
             <div className="mt-6 flex items-center justify-center">

@@ -176,7 +176,11 @@ export default function OriginalDetailView({
               <SlidersHorizontal size={14} />
             </button>
             <Link
-              href={CHARTS_PAGE_CATEGORIES.includes(entry.category) ? "/charts" : "/components"}
+              href={
+                CHARTS_PAGE_CATEGORIES.includes(entry.category)
+                  ? `/charts${entry.category === CHARTS_PAGE_CATEGORIES[0] ? "" : `?category=${encodeURIComponent(entry.category)}`}`
+                  : "/components"
+              }
               className="flex md:hidden lg:flex items-center gap-1.5 p-2 rounded-pills bg-black/60 backdrop-blur border border-white/10 text-white/80 hover:text-white shrink-0"
               aria-label="Back to components"
             >
