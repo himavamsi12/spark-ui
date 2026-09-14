@@ -7,59 +7,21 @@ import dynamic from "next/dynamic";
 // three.js, matter-js, recharts, GSAP plugins — into every page that showed
 // even one card.
 
-const CassetteMenu = dynamic(() => import("./CassetteMenu"));
 const CircularGallery = dynamic(() => import("./CircularGallery"));
 const PortraitOrbit = dynamic(() => import("./PortraitOrbit"));
-const ChromaCellGrid = dynamic(() => import("./ChromaCellGrid"));
-const ListHoverCards = dynamic(() => import("./ListHoverCards"));
-const GridRevealHero = dynamic(() => import("./GridRevealHero"));
-const InlineHoverImage = dynamic(() => import("./InlineHoverImage"));
-const SplitFlickerMenu = dynamic(() => import("./SplitFlickerMenu"));
-const OrbitSlider = dynamic(() => import("./OrbitSlider"));
+const SpiralGallery = dynamic(() => import("./SpiralGallery"));
 const AuroraLoginCard = dynamic(() => import("./AuroraLoginCard"));
-const ExpandingRowGallery = dynamic(() => import("./ExpandingRowGallery"));
-const UnravelStrokeReveal = dynamic(() => import("./UnravelStrokeReveal"));
-const GooeyTextReveal = dynamic(() => import("./GooeyTextReveal"));
-const CounterRevealHero = dynamic(() => import("./CounterRevealHero"));
-const ConfettiReveal = dynamic(() => import("./ConfettiReveal"));
-const PerpetualSlider = dynamic(() => import("./PerpetualSlider"));
 const GridDeformVideo = dynamic(() => import("./GridDeformVideo"));
-const AsciiHandFooter = dynamic(() => import("./AsciiHandFooter"));
-const MagneticMarquee = dynamic(() => import("./MagneticMarquee"));
-const ClipMaskPageTransition = dynamic(() => import("./ClipMaskPageTransition"));
-const GridWipeTransition = dynamic(() => import("./GridWipeTransition"));
-const StrokeDrawReveal = dynamic(() => import("./StrokeDrawReveal"));
-const GridShutterTransition = dynamic(() => import("./GridShutterTransition"));
 const DissolveImageReveal = dynamic(() => import("./DissolveImageReveal"));
-const MosaicFlipHover = dynamic(() => import("./MosaicFlipHover"));
-const LensZoomScroll = dynamic(() => import("./LensZoomScroll"));
-const AccordionFrames = dynamic(() => import("./AccordionFrames"));
-const MagneticCards = dynamic(() => import("./MagneticCards"));
-const SteelworksReveal = dynamic(() => import("./SteelworksReveal"));
-const ScrollTunnel = dynamic(() => import("./ScrollTunnel"));
-const AsciiImageReveal = dynamic(() => import("./AsciiImageReveal"));
-const PhysicsTagHover = dynamic(() => import("./PhysicsTagHover"));
-const FluidCursor = dynamic(() => import("./FluidCursor"));
-const AccessGateReveal = dynamic(() => import("./AccessGateReveal"));
-const StickyFlipCards = dynamic(() => import("./StickyFlipCards"));
-const StickyImageDeck = dynamic(() => import("./StickyImageDeck"));
-const PhotoScatterGallery = dynamic(() => import("./PhotoScatterGallery"));
-const ScribbleStrokeCards = dynamic(() => import("./ScribbleStrokeCards"));
-const DraggablePillMenu = dynamic(() => import("./DraggablePillMenu"));
-const PartingContactRows = dynamic(() => import("./PartingContactRows"));
-const SpotlightProjectIndex = dynamic(() => import("./SpotlightProjectIndex"));
 const DissolveWashHero = dynamic(() => import("./DissolveWashHero"));
 const ParallaxMinimapScroll = dynamic(() => import("./ParallaxMinimapScroll"));
-const SlidingRailMenu = dynamic(() => import("./SlidingRailMenu"));
-const BlockSweepPageTransition = dynamic(() => import("./BlockSweepPageTransition"));
-const PlayablePillDrop = dynamic(() => import("./PlayablePillDrop"));
-const WordHighlightReveal = dynamic(() => import("./WordHighlightReveal"));
 const CursorImageTrail = dynamic(() => import("./CursorImageTrail"));
+const FallingImageTrail = dynamic(() => import("./FallingImageTrail"));
+const MaskPageTransition = dynamic(() => import("./MaskPageTransition"));
+const PixelPageTransition = dynamic(() => import("./PixelPageTransition"));
+const CounterLoaderHero = dynamic(() => import("./CounterLoaderHero"));
+const InkRevealCursor = dynamic(() => import("./InkRevealCursor"));
 const FluidParticleField = dynamic(() => import("./FluidParticleField"));
-const OverlayMenu = dynamic(() => import("./OverlayMenu"));
-const RippleSlider = dynamic(() => import("./RippleSlider"));
-const SpiralImageGallery = dynamic(() => import("./SpiralImageGallery"));
-const StrokePageTransition = dynamic(() => import("./StrokePageTransition"));
 const ControlCenterEdit = dynamic(() => import("./ControlCenterEdit"));
 const PhysicsDock = dynamic(() => import("./PhysicsDock"));
 const CoverflowPlayer = dynamic(() => import("./CoverflowPlayer"));
@@ -121,59 +83,21 @@ const MorphViews = dynamic(() => import("./mono-charts/MorphViews").then((m) => 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const ORIGINAL_COMPONENTS: Record<string, React.ComponentType<any>> = {
-  "cassette-menu": CassetteMenu,
   "circular-gallery": CircularGallery,
   "portrait-orbit": PortraitOrbit,
-  "chroma-cell-grid": ChromaCellGrid,
-  "list-hover-cards": ListHoverCards,
-  "grid-reveal-hero": GridRevealHero,
-  "inline-hover-image": InlineHoverImage,
-  "split-flicker-menu": SplitFlickerMenu,
-  "orbit-slider": OrbitSlider,
+  "spiral-gallery": SpiralGallery,
   "aurora-login-card": AuroraLoginCard,
-  "expanding-row-gallery": ExpandingRowGallery,
-  "unravel-stroke-reveal": UnravelStrokeReveal,
-  "gooey-text-reveal": GooeyTextReveal,
-  "counter-reveal-hero": CounterRevealHero,
-  "confetti-reveal": ConfettiReveal,
-  "perpetual-slider": PerpetualSlider,
   "grid-deform-video": GridDeformVideo,
-  "ascii-hand-footer": AsciiHandFooter,
-  "magnetic-marquee": MagneticMarquee,
-  "clip-mask-page-transition": ClipMaskPageTransition,
-  "grid-wipe-transition": GridWipeTransition,
-  "stroke-draw-reveal": StrokeDrawReveal,
-  "grid-shutter-transition": GridShutterTransition,
   "dissolve-image-reveal": DissolveImageReveal,
-  "mosaic-flip-hover": MosaicFlipHover,
-  "lens-zoom-scroll": LensZoomScroll,
-  "accordion-frames": AccordionFrames,
-  "magnetic-cards": MagneticCards,
-  "steelworks-reveal": SteelworksReveal,
-  "scroll-tunnel": ScrollTunnel,
-  "ascii-image-reveal": AsciiImageReveal,
-  "physics-tag-hover": PhysicsTagHover,
-  "fluid-cursor": FluidCursor,
-  "access-gate-reveal": AccessGateReveal,
-  "sticky-flip-cards": StickyFlipCards,
-  "sticky-image-deck": StickyImageDeck,
-  "photo-scatter-gallery": PhotoScatterGallery,
-  "scribble-stroke-cards": ScribbleStrokeCards,
-  "draggable-pill-menu": DraggablePillMenu,
-  "parting-contact-rows": PartingContactRows,
-  "spotlight-project-index": SpotlightProjectIndex,
   "dissolve-wash-hero": DissolveWashHero,
   "parallax-minimap-scroll": ParallaxMinimapScroll,
-  "sliding-rail-menu": SlidingRailMenu,
-  "block-sweep-page-transition": BlockSweepPageTransition,
-  "playable-pill-drop": PlayablePillDrop,
-  "word-highlight-reveal": WordHighlightReveal,
   "cursor-image-trail": CursorImageTrail,
+  "falling-image-trail": FallingImageTrail,
+  "mask-page-transition": MaskPageTransition,
+  "pixel-page-transition": PixelPageTransition,
+  "counter-loader-hero": CounterLoaderHero,
+  "ink-reveal-cursor": InkRevealCursor,
   "fluid-particle-field": FluidParticleField,
-  "overlay-menu": OverlayMenu,
-  "ripple-slider": RippleSlider,
-  "spiral-image-gallery": SpiralImageGallery,
-  "stroke-page-transition": StrokePageTransition,
   "control-center-edit": ControlCenterEdit,
   "physics-dock": PhysicsDock,
   "coverflow-player": CoverflowPlayer,
@@ -240,59 +164,21 @@ export const ORIGINAL_COMPONENTS: Record<string, React.ComponentType<any>> = {
  * card scrolls into view, instead of showing an empty box that pops in.
  */
 export const ORIGINAL_LOADERS: Record<string, () => Promise<unknown>> = {
-  "cassette-menu": () => import("./CassetteMenu"),
   "circular-gallery": () => import("./CircularGallery"),
   "portrait-orbit": () => import("./PortraitOrbit"),
-  "chroma-cell-grid": () => import("./ChromaCellGrid"),
-  "list-hover-cards": () => import("./ListHoverCards"),
-  "grid-reveal-hero": () => import("./GridRevealHero"),
-  "inline-hover-image": () => import("./InlineHoverImage"),
-  "split-flicker-menu": () => import("./SplitFlickerMenu"),
-  "orbit-slider": () => import("./OrbitSlider"),
+  "spiral-gallery": () => import("./SpiralGallery"),
   "aurora-login-card": () => import("./AuroraLoginCard"),
-  "expanding-row-gallery": () => import("./ExpandingRowGallery"),
-  "unravel-stroke-reveal": () => import("./UnravelStrokeReveal"),
-  "gooey-text-reveal": () => import("./GooeyTextReveal"),
-  "counter-reveal-hero": () => import("./CounterRevealHero"),
-  "confetti-reveal": () => import("./ConfettiReveal"),
-  "perpetual-slider": () => import("./PerpetualSlider"),
   "grid-deform-video": () => import("./GridDeformVideo"),
-  "ascii-hand-footer": () => import("./AsciiHandFooter"),
-  "magnetic-marquee": () => import("./MagneticMarquee"),
-  "clip-mask-page-transition": () => import("./ClipMaskPageTransition"),
-  "grid-wipe-transition": () => import("./GridWipeTransition"),
-  "stroke-draw-reveal": () => import("./StrokeDrawReveal"),
-  "grid-shutter-transition": () => import("./GridShutterTransition"),
   "dissolve-image-reveal": () => import("./DissolveImageReveal"),
-  "mosaic-flip-hover": () => import("./MosaicFlipHover"),
-  "lens-zoom-scroll": () => import("./LensZoomScroll"),
-  "accordion-frames": () => import("./AccordionFrames"),
-  "magnetic-cards": () => import("./MagneticCards"),
-  "steelworks-reveal": () => import("./SteelworksReveal"),
-  "scroll-tunnel": () => import("./ScrollTunnel"),
-  "ascii-image-reveal": () => import("./AsciiImageReveal"),
-  "physics-tag-hover": () => import("./PhysicsTagHover"),
-  "fluid-cursor": () => import("./FluidCursor"),
-  "access-gate-reveal": () => import("./AccessGateReveal"),
-  "sticky-flip-cards": () => import("./StickyFlipCards"),
-  "sticky-image-deck": () => import("./StickyImageDeck"),
-  "photo-scatter-gallery": () => import("./PhotoScatterGallery"),
-  "scribble-stroke-cards": () => import("./ScribbleStrokeCards"),
-  "draggable-pill-menu": () => import("./DraggablePillMenu"),
-  "parting-contact-rows": () => import("./PartingContactRows"),
-  "spotlight-project-index": () => import("./SpotlightProjectIndex"),
   "dissolve-wash-hero": () => import("./DissolveWashHero"),
   "parallax-minimap-scroll": () => import("./ParallaxMinimapScroll"),
-  "sliding-rail-menu": () => import("./SlidingRailMenu"),
-  "block-sweep-page-transition": () => import("./BlockSweepPageTransition"),
-  "playable-pill-drop": () => import("./PlayablePillDrop"),
-  "word-highlight-reveal": () => import("./WordHighlightReveal"),
   "cursor-image-trail": () => import("./CursorImageTrail"),
+  "falling-image-trail": () => import("./FallingImageTrail"),
+  "mask-page-transition": () => import("./MaskPageTransition"),
+  "pixel-page-transition": () => import("./PixelPageTransition"),
+  "counter-loader-hero": () => import("./CounterLoaderHero"),
+  "ink-reveal-cursor": () => import("./InkRevealCursor"),
   "fluid-particle-field": () => import("./FluidParticleField"),
-  "overlay-menu": () => import("./OverlayMenu"),
-  "ripple-slider": () => import("./RippleSlider"),
-  "spiral-image-gallery": () => import("./SpiralImageGallery"),
-  "stroke-page-transition": () => import("./StrokePageTransition"),
   "control-center-edit": () => import("./ControlCenterEdit"),
   "physics-dock": () => import("./PhysicsDock"),
   "coverflow-player": () => import("./CoverflowPlayer"),

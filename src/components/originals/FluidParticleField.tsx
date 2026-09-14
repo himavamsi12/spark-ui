@@ -46,12 +46,12 @@ type Particle = {
  * a wave that sloshes back and finds its level again.
  */
 export default function FluidParticleField({
-  eyebrow = "Got something worth building?",
-  heading = "Let's make\nit move.",
-  buttonLabel = "Start a project",
-  background = "#1a2ffb",
-  particleColor = "#ffffff",
-  textColor = "#ffffff",
+  eyebrow = "Have an idea brewing?",
+  heading = "Let's shape\nwhat's next.",
+  buttonLabel = "Get in touch",
+  background = "#0f3b2c",
+  particleColor = "#d4f58a",
+  textColor = "#f4fbe6",
   particleCount = 1400,
   particleSize = 12,
   spacingFactor = 5,

@@ -27,12 +27,9 @@ const CARD_UNMOUNT_MARGIN = 450;
  * components too expensive to run beside a grid of others; the live version
  * still runs on its own page.
  * - Fluid Particle Field: its simulation alone held the grid to ~30fps.
- * - Mosaic Flip Hover: ~750 3D-transformed tiles became hundreds of GPU layers,
- *   and re-layering them took ~80ms a frame, enough to stall the whole page.
  */
 const STILL_PREVIEWS: Record<string, string> = {
   "fluid-particle-field": "/fluid-particle-field/poster.jpg",
-  "mosaic-flip-hover": "/mosaic-flip/poster.jpg",
 };
 
 /**
@@ -84,10 +81,13 @@ export default function MediaPreview({
   entry,
   className,
   still = false,
+  interactive = false,
 }: {
   entry: ComponentEntry;
   className?: string;
   still?: boolean;
+  /** Let the pointer reach the live component so it can be used in the card. */
+  interactive?: boolean;
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -183,8 +183,8 @@ export default function MediaPreview({
           own scroll effects; while the pointer is over one, the browser cannot
           scroll the page until the (busy) main thread answers each wheel event.
           Elements that cannot be hit-tested don't block scrolling, and the card
-          around a preview is a link anyway. */}
-      <div className="pointer-events-none h-full w-full" style={{ animation: "sparkPreviewIn 280ms ease-out both" }}>
+          around a preview is a link anyway. Interactive previews opt back in. */}
+      <div className={`${interactive ? "" : "pointer-events-none "}h-full w-full`} style={{ animation: "sparkPreviewIn 280ms ease-out both" }}>
         <Comp {...entry.defaults} autoPlay={!still} />
       </div>
     </Suspense>

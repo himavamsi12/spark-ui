@@ -1,4 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" fill="none">
-<defs><linearGradient id="g6" x1="20" y1="10" x2="180" y2="190" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f472b6"/><stop offset="0.5" stop-color="#e879f9"/><stop offset="1" stop-color="#818cf8"/></linearGradient></defs>
-<g stroke="url(#g6)" fill="none"><ellipse cx="100" cy="100" rx="86" ry="40" stroke-width="3"/><ellipse cx="100" cy="100" rx="86" ry="40" stroke-width="3" transform="rotate(60 100 100)"/><ellipse cx="100" cy="100" rx="86" ry="40" stroke-width="3" transform="rotate(120 100 100)"/><circle cx="100" cy="100" r="15" fill="url(#g6)" stroke="none"/></g>
-</svg>

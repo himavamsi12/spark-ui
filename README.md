@@ -14,7 +14,7 @@
 
 ```bash
 npx spark-ui-registry@latest list
-npx spark-ui-registry@latest add cassette-menu
+npx spark-ui-registry@latest add aurora-login-card
 ```
 
 `add` writes the source into your project, installs the npm packages the component imports (`gsap`, `three`, …) using whichever package manager your lockfile implies, and downloads the images it references into `public/`.
@@ -70,7 +70,7 @@ The same catalogue over plain HTTP, if you would rather not use MCP.
 
 ```bash
 curl https://spark-ui-cyan.vercel.app/api/components
-curl https://spark-ui-cyan.vercel.app/api/components/cassette-menu
+curl https://spark-ui-cyan.vercel.app/api/components/aurora-login-card
 ```
 
 - `GET /api/components` → `{ count, components: [{ slug, name, category, description, props }] }`

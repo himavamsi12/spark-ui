@@ -4,7 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 export default function Footer() {
   return (
     <footer className="border-t border-border px-6 py-8">
-      <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-col gap-1.5">
           <span className="text-xs text-muted">Spark UI, free animated components for the web.</span>
           <span className="flex items-center gap-1.5 text-xs text-muted">

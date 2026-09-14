@@ -2,22 +2,10 @@
 
 import { useEffect, useRef } from "react";
 
-const DEFAULT_TITLES = [
-  "Redroom Gesture 14",
-  "Shadowwear 6AM",
-  "Blur Formation 03",
-  "Sunglass Operator",
-  "Azure Figure 5",
-];
-const DEFAULT_CATEGORIES = [
-  "Concept Series",
-  "Photography",
-  "Kinetic Study",
-  "Editorial Motion",
-  "Visual Research",
-];
-const DEFAULT_YEARS = ["2025", "2024", "2024", "2023", "2024"];
-const DEFAULT_IMAGES = Array.from({ length: 5 }, (_, i) => `/accordion-frames/spotlight-${i + 1}.jpg`);
+const DEFAULT_TITLES = ["Fjord Overlook 01", "Snowline Ridge", "Valley Granite 07", "Sea Arch Blue", "Red Canyon Dusk"];
+const DEFAULT_CATEGORIES = ["Landscape Series", "Alpine Study", "Field Journal", "Coastal Survey", "Desert Light"];
+const DEFAULT_YEARS = ["2026", "2025", "2025", "2024", "2026"];
+const DEFAULT_IMAGES = Array.from({ length: 5 }, (_, i) => `/parallax-minimap-scroll/photo-${i + 1}.jpg`);
 
 const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor;
 
@@ -41,13 +29,13 @@ export default function ParallaxMinimapScroll({
   minimapHeight = 250,
   minimapWidth = 75,
   previewWidth = 35,
-  minimapBackground = "#ffffff",
-  minimapTextColor = "#000000",
+  minimapBackground = "#121212",
+  minimapTextColor = "#f1ece2",
   imageScale = 150,
   parallaxAmount = 20,
   scrollSpeed = 75,
   snapDuration = 500,
-  fontFamily = "var(--font-inter), sans-serif",
+  fontFamily = "var(--font-dm-sans), sans-serif",
   textScale = 100,
   autoPlay = true,
 }: {

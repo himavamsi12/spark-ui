@@ -6,30 +6,9 @@ import { SplitText } from "gsap/SplitText";
 
 gsap.registerPlugin(SplitText);
 
-const DEFAULT_TITLES = [
-  "Harbor Light",
-  "Paper Moon",
-  "Tidal Hush",
-  "Orchard Road",
-  "Copper Hours",
-  "Lantern Blue",
-  "Salt Air",
-  "Velvet Room",
-  "Northern Field",
-  "Brass Morning",
-  "Slow River",
-  "Marble Noon",
-  "Cinder Bloom",
-  "Hollow Pine",
-  "Amber Coast",
-  "Linen Sky",
-  "Quartz Evening",
-  "Wild Clover",
-  "Saffron Dusk",
-  "First Snow",
-];
+const DEFAULT_TITLES = ["Sunlit Field", "Golden Hair", "Film Camera", "Hooded Tide", "Wild Bloom", "Lake Stand", "Low Fog", "Blue Hour", "City Edge", "Last Light", "Window Seat", "Shutter Hands", "Spark Night", "Knit Cap", "Golden Hush", "Pine Walk", "Page Turn", "Autumn Scarf", "Paddle Out", "Soft Gaze"];
 
-const DEFAULT_IMAGES = Array.from({ length: 20 }, (_, i) => `/portrait-orbit/img${i + 1}.jpeg`);
+const DEFAULT_IMAGES = Array.from({ length: 20 }, (_, i) => `/portrait-orbit/photo-${i + 1}.jpg`);
 
 type CardState = {
   currentRotation: number;
@@ -50,9 +29,9 @@ type CardState = {
  * rises in; click anywhere or press Escape to return.
  */
 export default function PortraitOrbit({
-  brand = "Lumen Folio",
-  navAction = "View Collection",
-  footerLabel = "Series Twelve",
+  brand = "Quiet Faces",
+  navAction = "Browse Archive",
+  footerLabel = "Volume Four",
   titles = DEFAULT_TITLES,
   images = DEFAULT_IMAGES,
   imageCount = 25,
@@ -60,9 +39,9 @@ export default function PortraitOrbit({
   sensitivity = 500,
   effectFalloff = 250,
   cardMoveAmount = 50,
-  background = "#e3e3db",
-  textColor = "#1f1f1f",
-  fontFamily = "var(--font-plus-jakarta-sans), sans-serif",
+  background = "#15171c",
+  textColor = "#ece6da",
+  fontFamily = "var(--font-host-grotesk), sans-serif",
   textScale = 100,
   autoPlay = false,
 }: {

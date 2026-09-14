@@ -14,6 +14,12 @@ const data = buildOriginalEntries().filter(
 // ORIGINALS array, and new entries get slotted in beside their relatives there
 // rather than appended, so it tracks grouping rather than recency.
 const NEW_COMPONENTS = [
+  "spiral-gallery",
+  "ink-reveal-cursor",
+  "counter-loader-hero",
+  "pixel-page-transition",
+  "mask-page-transition",
+  "falling-image-trail",
   "portrait-orbit",
   "cursor-image-trail",
   "parallax-minimap-scroll",
@@ -21,22 +27,7 @@ const NEW_COMPONENTS = [
   "fluid-particle-field",
   "grid-deform-video",
   "circular-gallery",
-  "block-sweep-page-transition",
-  "unravel-stroke-reveal",
   "dissolve-image-reveal",
-  "accordion-frames",
-  "grid-reveal-hero",
-  "chroma-cell-grid",
-  "word-highlight-reveal",
-  "playable-pill-drop",
-  "sliding-rail-menu",
-  "spotlight-project-index",
-  "parting-contact-rows",
-  "draggable-pill-menu",
-  "scribble-stroke-cards",
-  "photo-scatter-gallery",
-  "sticky-image-deck",
-  "expanding-row-gallery",
   "aurora-login-card",
 ];
 

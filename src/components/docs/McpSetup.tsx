@@ -135,7 +135,7 @@ export default function McpSetup({ componentCount }: { componentCount: number })
           {[
             "What animated components are available in Spark UI?",
             "Find me a scroll-driven text reveal and add it to my landing page.",
-            "Pull in the cassette menu component and wire it up with my own images.",
+            "Pull in the aurora login card component and wire it up with my own images.",
           ].map((q) => (
             <li key={q} className="text-sm text-pearl flex gap-2">
               <span className="text-muted shrink-0">·</span>
@@ -152,7 +152,7 @@ export default function McpSetup({ componentCount }: { componentCount: number })
         </p>
         <div className="space-y-2">
           <CommandRow command="npx spark-ui-registry@latest list" />
-          <CommandRow command="npx spark-ui-registry@latest add cassette-menu" />
+          <CommandRow command="npx spark-ui-registry@latest add aurora-login-card" />
         </div>
       </section>
 
@@ -163,7 +163,7 @@ export default function McpSetup({ componentCount }: { componentCount: number })
         </p>
         <div className="space-y-2">
           <CommandRow command={`curl ${origin}/api/components`} />
-          <CommandRow command={`curl ${origin}/api/components/cassette-menu`} />
+          <CommandRow command={`curl ${origin}/api/components/aurora-login-card`} />
         </div>
       </section>
 

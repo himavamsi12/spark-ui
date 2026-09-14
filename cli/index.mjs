@@ -2,7 +2,7 @@
 /**
  * Spark UI CLI: copies animated components into your project, shadcn-style.
  *
- *   npx spark-ui-registry@latest add list-hover-cards
+ *   npx spark-ui-registry@latest add portrait-orbit
  *   npx spark-ui-registry@latest list
  *
  * The component source is fetched from the registry and written into your repo,
@@ -153,7 +153,7 @@ Options
   }
 
   if (opts.slugs.length === 0) {
-    console.error(c.red("Specify at least one component, e.g. npx spark-ui-registry@latest add cassette-menu"));
+    console.error(c.red("Specify at least one component, e.g. npx spark-ui-registry@latest add aurora-login-card"));
     process.exit(1);
   }
 

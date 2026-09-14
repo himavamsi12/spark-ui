@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 const DEFAULT_IMAGES = Array.from(
   { length: 20 },
-  (_, i) => `/accordion-frames/spotlight-${i + 1}.jpg`,
+  (_, i) => `/cursor-image-trail/photo-${i + 1}.jpg`,
 );
 
 const MathUtils = {
@@ -27,11 +27,11 @@ type TrailItem = {
  */
 export default function CursorImageTrail({
   images = DEFAULT_IMAGES,
-  heroImage = "/accordion-frames/spotlight-7.jpg",
-  lines = ["[ Every Move Leaves a Trace ]", "Trail Study 08 — Spark UI"],
-  background = "#101010",
-  maskColor = "#000000",
-  textColor = "#4e4e4e",
+  heroImage = "/cursor-image-trail/photo-13.jpg",
+  lines = ["[ Follow the Lines ]", "Structure Study 04 — Spark UI"],
+  background = "#0b1020",
+  maskColor = "#060914",
+  textColor = "#7f8db0",
   heroOpacity = 20,
   imageSize = 175,
   mouseThreshold = 110,
@@ -42,7 +42,7 @@ export default function CursorImageTrail({
   staggerOut = 25,
   slideDuration = 400,
   followStrength = 35,
-  fontFamily = "var(--font-commit-mono), monospace",
+  fontFamily = "var(--font-dm-mono), monospace",
   textScale = 100,
   autoPlay = true,
 }: {

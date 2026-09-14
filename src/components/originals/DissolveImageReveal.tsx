@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
-const DEFAULT_IMAGES = Array.from({ length: 5 }, (_, i) => `/dissolve-reveal/img-${i + 1}.jpg`);
+const DEFAULT_IMAGES = Array.from({ length: 5 }, (_, i) => `/dissolve-image-reveal/photo-${i + 1}.jpg`);
 const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@$%&*+=?!<>{}[]";
 
 /** Deterministic per-cell noise, so the scatter is stable across renders. */
@@ -14,13 +14,13 @@ function hashFromPosition(row: number, col: number, seed: number) {
 
 export default function DissolveImageReveal({
   images = DEFAULT_IMAGES,
-  dissolveColor = "#ff6426",
+  dissolveColor = "#ffb454",
   cellSize = 16,
   spreadAbove = 25,
   spreadBelow = 25,
   scatterIntensity = 15,
   visibilityThreshold = 65,
-  fontFamily = "var(--font-dm-mono), monospace",
+  fontFamily = "var(--font-commit-mono), monospace",
   speed = 100,
   autoPlay = false,
 }: {
@@ -211,7 +211,7 @@ export default function DissolveImageReveal({
   return (
     <div
       ref={rootRef}
-      className="relative w-full h-full overflow-hidden bg-[#141414]"
+      className="relative w-full h-full overflow-hidden bg-[#0f0c18]"
       style={{ isolation: "isolate", fontFamily }}
     >
       {images.map((src, i) => (

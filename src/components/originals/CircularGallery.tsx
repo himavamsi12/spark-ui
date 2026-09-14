@@ -13,12 +13,12 @@ type GalleryItem = {
 };
 
 export default function CircularGallery({
-  centerLabel = "spark ui",
+  centerLabel = "field notes",
   speed = 100,
   tiltAngle = -20,
   hoverScale = 110,
   dimStrength = 65,
-  fontFamily = "var(--font-dm-sans), sans-serif",
+  fontFamily = "var(--font-instrument-sans), sans-serif",
   textScale = 100,
 }: {
   centerLabel?: string;
@@ -55,7 +55,7 @@ export default function CircularGallery({
       frame.className = "w-full h-full overflow-hidden rounded";
 
       const image = document.createElement("img");
-      image.src = `/circular-gallery/img${i + 1}.jpg`;
+      image.src = `/circular-gallery/photo-${i + 1}.jpg`;
       image.className = "w-full h-full object-cover";
       image.draggable = false;
 
@@ -178,10 +178,10 @@ export default function CircularGallery({
   }, [speed, tiltAngle, hoverScale, dimStrength]);
 
   return (
-    <div ref={rootRef} className="relative w-full h-full overflow-hidden bg-black" style={{ fontFamily }}>
+    <div ref={rootRef} className="relative w-full h-full overflow-hidden bg-[#070d1c]" style={{ fontFamily }}>
       <div ref={galleryRef} className="absolute inset-0" />
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center whitespace-nowrap rounded-full bg-white/10 backdrop-blur border border-white/10 text-white/70 uppercase tracking-wide pointer-events-none"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center whitespace-nowrap rounded-full bg-white/10 backdrop-blur border border-white/15 text-white/75 uppercase tracking-wide pointer-events-none"
         style={{
           fontSize: `calc(10px * ${scale})`,
           padding: `calc(7px * ${scale}) calc(14px * ${scale})`,

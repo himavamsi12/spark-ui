@@ -211,7 +211,7 @@ export default function Landing({
               </p>
               <div className="flex items-center gap-2 bg-panel border border-border-soft rounded-medium px-2.5 py-2">
                 <FileCode2 size={13} className="text-accent shrink-0" />
-                <code className="text-[11px] font-mono text-pearl truncate">CassetteMenu.tsx</code>
+                <code className="text-[11px] font-mono text-pearl truncate">AuroraLoginCard.tsx</code>
               </div>
             </Tile>
 
@@ -239,7 +239,7 @@ export default function Landing({
               <div className="flex items-center gap-2 bg-panel border border-border-soft rounded-medium px-3 py-2.5">
                 <span className="text-muted font-mono text-xs shrink-0">$</span>
                 <code className="text-xs font-mono text-pearl truncate">
-                  npx spark-ui-registry@latest add cassette-menu
+                  npx spark-ui-registry@latest add aurora-login-card
                 </code>
                 <span className="ml-auto w-[7px] h-3.5 bg-accent/70 rounded-[1px] shrink-0" />
               </div>

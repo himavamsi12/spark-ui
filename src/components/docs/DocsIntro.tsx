@@ -141,7 +141,7 @@ export default function DocsIntro({ allComponents }: { allComponents: ComponentE
                 Writes the component into your project, downloads the images it references, and
                 installs the packages it imports.
               </p>
-              <CodeBlock>{`npx spark-ui-registry@latest add cassette-menu`}</CodeBlock>
+              <CodeBlock>{`npx spark-ui-registry@latest add aurora-login-card`}</CodeBlock>
               <p className="mt-4">See everything available:</p>
               <CodeBlock>{`npx spark-ui-registry@latest list`}</CodeBlock>
 

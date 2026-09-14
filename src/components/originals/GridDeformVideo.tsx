@@ -177,7 +177,7 @@ export default function GridDeformVideo({
   }, [strength, aberration, gridSize]);
 
   return (
-    <div ref={rootRef} className="relative w-full h-full overflow-hidden bg-black" style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}>
+    <div ref={rootRef} className="relative w-full h-full overflow-hidden bg-[#050b14]" style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}>
       <video
         ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover opacity-0"
@@ -185,7 +185,7 @@ export default function GridDeformVideo({
         muted
         loop
         playsInline
-        src="/grid-deform/hero-footage.mp4"
+        src="/grid-deform-video/footage.mp4"
       />
     </div>
   );

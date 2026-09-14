@@ -49,7 +49,7 @@ const TOOLS = [
     inputSchema: {
       type: "object",
       properties: {
-        slug: { type: "string", description: "Component slug, e.g. \"cassette-menu\"." },
+        slug: { type: "string", description: "Component slug, e.g. \"aurora-login-card\"." },
         props: {
           type: "object",
           description:

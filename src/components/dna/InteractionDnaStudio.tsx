@@ -213,7 +213,7 @@ function starterProject(): DnaProject {
 function circularGalleryProject(): DnaProject {
   const ring = createLayer("image", {
     name: "Ring",
-    content: "/circular-gallery/img1.jpg",
+    content: "/circular-gallery/photo-1.jpg",
     x: 50,
     y: 50,
     width: 100,
@@ -232,7 +232,7 @@ function circularGalleryProject(): DnaProject {
     itemWidth: 148,
     itemHeight: 98,
     // One picture per clone, the same set the original component ships with.
-    sources: Array.from({ length: 12 }, (_, i) => `/circular-gallery/img${i + 1}.jpg`),
+    sources: Array.from({ length: 12 }, (_, i) => `/circular-gallery/photo-${i + 1}.jpg`),
   };
   ring.effects = [
     fx("wheel-spin", 0, { idle: 0.12, sensitivity: 0.55, decay: 0.05, max: 2.5 }),

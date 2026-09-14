@@ -87,13 +87,13 @@ function hexToRgb(hex: string) {
  * as the wash reaches it.
  */
 export default function DissolveWashHero({
-  title = "Morphogenesis",
-  subtitle = "Solid form gives way to liquid movement.",
-  bodyText = "An underlying field of motion pushes and pulls the image across its surface, redistributing pixels in a way that feels organic and constantly in flux.",
-  heroImage = "/circular-gallery/img3.jpg",
-  dissolveColor = "#ebf5df",
-  heroTextColor = "#fec81d",
-  contentTextColor = "#0f0f0f",
+  title = "Canopy",
+  subtitle = "Water carves the green in slow motion.",
+  bodyText = "Mist rolls off the ridge and the forest softens into colour, every branch and falling thread of water dissolving into one quiet, moving surface.",
+  heroImage = "/dissolve-wash-hero/photo-1.jpg",
+  dissolveColor = "#e6edf5",
+  heroTextColor = "#ffffff",
+  contentTextColor = "#16263a",
   spread = 50,
   dissolveSpeed = 200,
   displayFont = "var(--font-instrument-serif), serif",
