@@ -114,7 +114,7 @@ export default function Explorer({
               <div
                 role="tablist"
                 aria-label="Kit category"
-                className="flex items-center gap-1 bg-panel border border-border rounded-pills p-1 min-w-0 overflow-x-auto no-scrollbar"
+                className="flex items-center gap-1 bg-panel border border-border rounded-[10px] p-1 min-w-0 overflow-x-auto no-scrollbar"
               >
                 {categoryTabs.map((tab) => {
                   const Icon = TAB_ICONS[tab];
@@ -125,21 +125,21 @@ export default function Explorer({
                       role="tab"
                       aria-selected={active}
                       onClick={() => setCategory(tab)}
-                      className={`relative flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-pills transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 ${
+                      className={`relative flex cursor-pointer items-center gap-2 px-4 py-2 text-sm font-medium rounded-[8px] transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 ${
                         active ? "text-chalk" : "text-muted hover:text-pearl"
                       }`}
                     >
                       {active && (
                         <motion.span
                           layoutId="kit-tab-highlight"
-                          className="absolute inset-0 rounded-pills bg-slate"
+                          className="absolute inset-0 rounded-[8px] bg-slate border border-accent/70 shadow-[0_0_0_1px_rgba(255,138,61,0.08),0_0_14px_-4px_rgba(255,138,61,0.45)]"
                           transition={{ type: "spring", stiffness: 420, damping: 34 }}
                         />
                       )}
                       {Icon && <Icon size={15} className={`relative ${active ? "text-accent" : ""}`} />}
                       <span className="relative">{tab}</span>
                       <span
-                        className={`relative min-w-5 px-1.5 py-0.5 rounded-pills text-[11px] leading-none tabular-nums ${
+                        className={`relative min-w-5 px-1.5 py-0.5 rounded-[5px] text-[11px] leading-none tabular-nums ${
                           active ? "bg-accent/15 text-accent" : "bg-card text-muted"
                         }`}
                       >
