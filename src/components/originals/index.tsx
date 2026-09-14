@@ -36,7 +36,6 @@ const MonoRoundedDonutChart = dynamic(() => import("./mono-charts/MonoRoundedDon
 const MonoRoundedComposedChart = dynamic(() => import("./mono-charts/MonoRoundedComposedChart").then((m) => m.MonoRoundedComposedChart));
 const MonoRoundedScatterChart = dynamic(() => import("./mono-charts/MonoRoundedScatterChart").then((m) => m.MonoRoundedScatterChart));
 const MonoRoundedCandlestickChart = dynamic(() => import("./mono-charts/MonoRoundedCandlestickChart").then((m) => m.MonoRoundedCandlestickChart));
-const MonoRoundedKpiCardChart = dynamic(() => import("./mono-charts/MonoRoundedKpiCardChart").then((m) => m.MonoRoundedKpiCardChart));
 const MonoRoundedPyramidChart = dynamic(() => import("./mono-charts/MonoRoundedPyramidChart").then((m) => m.MonoRoundedPyramidChart));
 const MonoRoundedRadialBarGroup = dynamic(() => import("./mono-charts/MonoRoundedRadialBarGroup").then((m) => m.MonoRoundedRadialBarGroup));
 const MonoRoundedGaugeArc = dynamic(() => import("./mono-charts/MonoRoundedGaugeArc").then((m) => m.MonoRoundedGaugeArc));
@@ -53,7 +52,6 @@ const MonoRoundedStreamChart = dynamic(() => import("./mono-charts/MonoRoundedSt
 const MonoRoundedMeterChart = dynamic(() => import("./mono-charts/MonoRoundedMeterChart").then((m) => m.MonoRoundedMeterChart));
 const MonoRoundedWaterfallChart = dynamic(() => import("./mono-charts/MonoRoundedWaterfallChart").then((m) => m.MonoRoundedWaterfallChart));
 const MonoRoundedPolarChart = dynamic(() => import("./mono-charts/MonoRoundedPolarChart").then((m) => m.MonoRoundedPolarChart));
-const MonoRoundedRangeChart = dynamic(() => import("./mono-charts/MonoRoundedRangeChart").then((m) => m.MonoRoundedRangeChart));
 const MagneticColumns = dynamic(() => import("./mono-charts/MagneticColumns").then((m) => m.MagneticColumns));
 const RankRace = dynamic(() => import("./mono-charts/RankRace").then((m) => m.RankRace));
 const HourDial = dynamic(() => import("./mono-charts/HourDial").then((m) => m.HourDial));
@@ -112,7 +110,6 @@ export const ORIGINAL_COMPONENTS: Record<string, React.ComponentType<any>> = {
   "mono-hybrid-spline-bar": MonoRoundedComposedChart,
   "mono-scatter-matrix": MonoRoundedScatterChart,
   "mono-financial-candlesticks": MonoRoundedCandlestickChart,
-  "mono-stat-kpi-card": MonoRoundedKpiCardChart,
   "mono-tier-pyramid-stack": MonoRoundedPyramidChart,
   "mono-radial-bar-group": MonoRoundedRadialBarGroup,
   "mono-speedometer-gauge-arc": MonoRoundedGaugeArc,
@@ -129,7 +126,6 @@ export const ORIGINAL_COMPONENTS: Record<string, React.ComponentType<any>> = {
   "mono-arc-meter-gauge": MonoRoundedMeterChart,
   "mono-waterfall-steps": MonoRoundedWaterfallChart,
   "mono-polar-radial-pillars": MonoRoundedPolarChart,
-  "mono-range-band-area": MonoRoundedRangeChart,
   "magnetic-columns": MagneticColumns,
   "rank-race": RankRace,
   "hour-dial": HourDial,
@@ -193,7 +189,6 @@ export const ORIGINAL_LOADERS: Record<string, () => Promise<unknown>> = {
   "mono-hybrid-spline-bar": () => import("./mono-charts/MonoRoundedComposedChart"),
   "mono-scatter-matrix": () => import("./mono-charts/MonoRoundedScatterChart"),
   "mono-financial-candlesticks": () => import("./mono-charts/MonoRoundedCandlestickChart"),
-  "mono-stat-kpi-card": () => import("./mono-charts/MonoRoundedKpiCardChart"),
   "mono-tier-pyramid-stack": () => import("./mono-charts/MonoRoundedPyramidChart"),
   "mono-radial-bar-group": () => import("./mono-charts/MonoRoundedRadialBarGroup"),
   "mono-speedometer-gauge-arc": () => import("./mono-charts/MonoRoundedGaugeArc"),
@@ -210,7 +205,6 @@ export const ORIGINAL_LOADERS: Record<string, () => Promise<unknown>> = {
   "mono-arc-meter-gauge": () => import("./mono-charts/MonoRoundedMeterChart"),
   "mono-waterfall-steps": () => import("./mono-charts/MonoRoundedWaterfallChart"),
   "mono-polar-radial-pillars": () => import("./mono-charts/MonoRoundedPolarChart"),
-  "mono-range-band-area": () => import("./mono-charts/MonoRoundedRangeChart"),
   "magnetic-columns": () => import("./mono-charts/MagneticColumns"),
   "rank-race": () => import("./mono-charts/RankRace"),
   "hour-dial": () => import("./mono-charts/HourDial"),
