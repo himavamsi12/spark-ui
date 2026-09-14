@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="40 20 140 140">
+  <defs>
+    <linearGradient id="t" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffdca8"/>
+      <stop offset="100%" stop-color="#ff8a3d"/>
+    </linearGradient>
+    <linearGradient id="m" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff8a3d"/>
+      <stop offset="100%" stop-color="#e8730a"/>
+    </linearGradient>
+    <linearGradient id="s" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e8730a"/>
+      <stop offset="100%" stop-color="#7c2d12"/>
+    </linearGradient>
+  </defs>
+  <rect x="42" y="22" width="136" height="136" rx="30" fill="#0b0b0d"/>
+  <rect x="42" y="22" width="136" height="136" rx="30" fill="none" stroke="#aeaac0" stroke-opacity="0.35" stroke-width="3"/>
+  <g transform="translate(110 90) scale(1.38) translate(-122 -102)">
+    <path d="M140 66 L92 114 L116 114 L106 138 L152 92 L126 92 Z" fill="url(#s)" transform="translate(4,4)"/>
+    <path d="M138 62 L88 112 L114 112 L124 88 Z" fill="url(#t)"/>
+    <path d="M114 112 L102 138 L152 88 L124 88 Z" fill="url(#m)"/>
+    <path d="M138 62 L124 88 L114 88 Z" fill="#fef3c7" opacity="0.8"/>
+  </g>
+</svg>
