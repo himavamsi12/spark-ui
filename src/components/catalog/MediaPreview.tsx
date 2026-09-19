@@ -29,7 +29,6 @@ const CARD_UNMOUNT_MARGIN = 450;
  * - Fluid Particle Field: its simulation alone held the grid to ~30fps.
  */
 const STILL_PREVIEWS: Record<string, string> = {
-  "fluid-particle-field": "/fluid-particle-field/poster.jpg",
 };
 
 /**

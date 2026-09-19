@@ -22,7 +22,6 @@ const WIDE_PIECES = new Set(["route-covered"]);
 const OVERRIDES: Record<string, Record<string, unknown>> = {
   "coverflow-player": { startPlaying: false },
   "route-covered": { backdrop: "#0b0b0d" },
-  "portrait-orbit": { autoPlay: true },
 };
 
 /**

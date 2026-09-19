@@ -17,17 +17,8 @@ const NEW_COMPONENTS = [
   "spiral-gallery",
   "ink-reveal-cursor",
   "counter-loader-hero",
-  "pixel-page-transition",
   "mask-page-transition",
   "falling-image-trail",
-  "portrait-orbit",
-  "cursor-image-trail",
-  "parallax-minimap-scroll",
-  "dissolve-wash-hero",
-  "fluid-particle-field",
-  "grid-deform-video",
-  "circular-gallery",
-  "dissolve-image-reveal",
   "aurora-login-card",
 ];
 

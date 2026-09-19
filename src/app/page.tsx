@@ -7,7 +7,7 @@ const data = buildOriginalEntries();
 const isUiKit = (category: string) => CHARTS_PAGE_CATEGORIES.includes(category);
 
 // Live, hands-on pieces the hero playground cycles through.
-const HERO_PLAYGROUND = ["route-covered", "portrait-orbit", "coverflow-player", "ev-range-widgets"];
+const HERO_PLAYGROUND = ["route-covered", "coverflow-player", "ev-range-widgets", "tip-splitter"];
 
 export default function Home() {
   // Newest first, so the shelf shows what just came in.

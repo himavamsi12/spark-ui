@@ -7,21 +7,12 @@ import dynamic from "next/dynamic";
 // three.js, matter-js, recharts, GSAP plugins — into every page that showed
 // even one card.
 
-const CircularGallery = dynamic(() => import("./CircularGallery"));
-const PortraitOrbit = dynamic(() => import("./PortraitOrbit"));
 const SpiralGallery = dynamic(() => import("./SpiralGallery"));
 const AuroraLoginCard = dynamic(() => import("./AuroraLoginCard"));
-const GridDeformVideo = dynamic(() => import("./GridDeformVideo"));
-const DissolveImageReveal = dynamic(() => import("./DissolveImageReveal"));
-const DissolveWashHero = dynamic(() => import("./DissolveWashHero"));
-const ParallaxMinimapScroll = dynamic(() => import("./ParallaxMinimapScroll"));
-const CursorImageTrail = dynamic(() => import("./CursorImageTrail"));
 const FallingImageTrail = dynamic(() => import("./FallingImageTrail"));
 const MaskPageTransition = dynamic(() => import("./MaskPageTransition"));
-const PixelPageTransition = dynamic(() => import("./PixelPageTransition"));
 const CounterLoaderHero = dynamic(() => import("./CounterLoaderHero"));
 const InkRevealCursor = dynamic(() => import("./InkRevealCursor"));
-const FluidParticleField = dynamic(() => import("./FluidParticleField"));
 const ControlCenterEdit = dynamic(() => import("./ControlCenterEdit"));
 const PhysicsDock = dynamic(() => import("./PhysicsDock"));
 const CoverflowPlayer = dynamic(() => import("./CoverflowPlayer"));
@@ -81,21 +72,12 @@ const MorphViews = dynamic(() => import("./mono-charts/MorphViews").then((m) => 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const ORIGINAL_COMPONENTS: Record<string, React.ComponentType<any>> = {
-  "circular-gallery": CircularGallery,
-  "portrait-orbit": PortraitOrbit,
   "spiral-gallery": SpiralGallery,
   "aurora-login-card": AuroraLoginCard,
-  "grid-deform-video": GridDeformVideo,
-  "dissolve-image-reveal": DissolveImageReveal,
-  "dissolve-wash-hero": DissolveWashHero,
-  "parallax-minimap-scroll": ParallaxMinimapScroll,
-  "cursor-image-trail": CursorImageTrail,
   "falling-image-trail": FallingImageTrail,
   "mask-page-transition": MaskPageTransition,
-  "pixel-page-transition": PixelPageTransition,
   "counter-loader-hero": CounterLoaderHero,
   "ink-reveal-cursor": InkRevealCursor,
-  "fluid-particle-field": FluidParticleField,
   "control-center-edit": ControlCenterEdit,
   "physics-dock": PhysicsDock,
   "coverflow-player": CoverflowPlayer,
@@ -160,21 +142,12 @@ export const ORIGINAL_COMPONENTS: Record<string, React.ComponentType<any>> = {
  * card scrolls into view, instead of showing an empty box that pops in.
  */
 export const ORIGINAL_LOADERS: Record<string, () => Promise<unknown>> = {
-  "circular-gallery": () => import("./CircularGallery"),
-  "portrait-orbit": () => import("./PortraitOrbit"),
   "spiral-gallery": () => import("./SpiralGallery"),
   "aurora-login-card": () => import("./AuroraLoginCard"),
-  "grid-deform-video": () => import("./GridDeformVideo"),
-  "dissolve-image-reveal": () => import("./DissolveImageReveal"),
-  "dissolve-wash-hero": () => import("./DissolveWashHero"),
-  "parallax-minimap-scroll": () => import("./ParallaxMinimapScroll"),
-  "cursor-image-trail": () => import("./CursorImageTrail"),
   "falling-image-trail": () => import("./FallingImageTrail"),
   "mask-page-transition": () => import("./MaskPageTransition"),
-  "pixel-page-transition": () => import("./PixelPageTransition"),
   "counter-loader-hero": () => import("./CounterLoaderHero"),
   "ink-reveal-cursor": () => import("./InkRevealCursor"),
-  "fluid-particle-field": () => import("./FluidParticleField"),
   "control-center-edit": () => import("./ControlCenterEdit"),
   "physics-dock": () => import("./PhysicsDock"),
   "coverflow-player": () => import("./CoverflowPlayer"),

@@ -2,7 +2,7 @@
 /**
  * Spark UI CLI: copies animated components into your project, shadcn-style.
  *
- *   npx spark-ui-registry@latest add portrait-orbit
+ *   npx spark-ui-registry@latest add aurora-login-card
  *   npx spark-ui-registry@latest list
  *
  * The component source is fetched from the registry and written into your repo,
