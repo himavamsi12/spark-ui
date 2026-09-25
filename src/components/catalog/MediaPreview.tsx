@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { CHARTS_PAGE_CATEGORIES, type ComponentEntry } from "@/lib/types";
+import { CARD_SIZED_CATEGORIES, type ComponentEntry } from "@/lib/types";
 import { ORIGINAL_COMPONENTS, ORIGINAL_LOADERS } from "@/components/originals";
 
 /** Width full-page originals are laid out at before being shrunk into a card. */
@@ -102,13 +102,13 @@ export default function MediaPreview({
     const rect = el.getBoundingClientRect();
     const vh = window.innerHeight || 0;
     const vw = window.innerWidth || 0;
-    const m = CHARTS_PAGE_CATEGORIES.includes(entry.category) ? CARD_MOUNT_MARGIN : MOUNT_MARGIN;
+    const m = CARD_SIZED_CATEGORIES.includes(entry.category) ? CARD_MOUNT_MARGIN : MOUNT_MARGIN;
     setVisible(rect.bottom > -m && rect.top < vh + m && rect.right > -m && rect.left < vw + m);
 
     // Near the viewport: mount. Only once it is well clear does the second
     // observer take it back down again.
     const root = scrollParent(el);
-    const cardSizedEntry = CHARTS_PAGE_CATEGORIES.includes(entry.category);
+    const cardSizedEntry = CARD_SIZED_CATEGORIES.includes(entry.category);
     const mountMargin = cardSizedEntry ? CARD_MOUNT_MARGIN : MOUNT_MARGIN;
     const unmountMargin = cardSizedEntry ? CARD_UNMOUNT_MARGIN : UNMOUNT_MARGIN;
     const mountIo = new IntersectionObserver(
@@ -194,7 +194,7 @@ export default function MediaPreview({
   // and `zoom` it down, so the thumbnail is a true miniature of the page.
   // Components that measure with getBoundingClientRect must convert back to
   // layout pixels themselves, since rects come back in zoomed pixels.
-  const cardSized = CHARTS_PAGE_CATEGORIES.includes(entry.category);
+  const cardSized = CARD_SIZED_CATEGORIES.includes(entry.category);
   if (stillSrc) {
     return (
       <div ref={wrapRef} className={`relative bg-black overflow-hidden ${className ?? ""}`}>

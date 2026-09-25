@@ -5,7 +5,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { ORIGINAL_COMPONENTS, ORIGINAL_LOADERS } from "@/components/originals";
-import { CHARTS_PAGE_CATEGORIES, type ComponentEntry } from "@/lib/types";
+import { CARD_SIZED_CATEGORIES, type ComponentEntry } from "@/lib/types";
 
 /** How long each piece stays up before the playground moves on. */
 const CYCLE_MS = 6500;
@@ -130,7 +130,7 @@ export default function HeroPlayground({ items }: { items: ComponentEntry[] }) {
 /** Renders a piece live: card-sized UI Kit pieces directly, full-page ones on a scaled stage. */
 function LivePiece({ entry }: { entry: ComponentEntry }) {
   const Comp = ORIGINAL_COMPONENTS[entry.slug];
-  const cardSized = CHARTS_PAGE_CATEGORIES.includes(entry.category) && !WIDE_PIECES.has(entry.slug);
+  const cardSized = CARD_SIZED_CATEGORIES.includes(entry.category) && !WIDE_PIECES.has(entry.slug);
   const frameRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<{ w: number; h: number } | null>(null);
 

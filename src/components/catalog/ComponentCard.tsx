@@ -64,14 +64,14 @@ export default function ComponentCard({
         onClick={interactive ? openFromPreview : undefined}
       >
         <MediaPreview entry={entry} className="w-full h-full" still={still} interactive={interactive} />
-        <div className="pointer-events-none absolute top-2 right-2 bg-void/85 border border-pearl/10 text-[10px] font-medium text-pearl/80 px-2 py-0.5 rounded-pills">
+        <div className="pointer-events-none absolute top-1.5 right-1.5 bg-void/85 border border-pearl/10 text-[9px] font-medium text-pearl/80 px-1.5 py-px rounded-pills">
           Free
         </div>
       </div>
-      <div className="flex items-center justify-between px-3.5 py-3">
-        <span className="text-sm font-medium text-pearl truncate">{entry.name}</span>
-        <span className="flex items-center gap-1 text-xs text-muted shrink-0 ml-2">
-          <Eye size={13} />
+      <div className="flex items-center justify-between px-3 py-2">
+        <span className="text-[13px] font-medium text-pearl truncate">{entry.name}</span>
+        <span className="flex items-center gap-1 text-[11px] text-muted shrink-0 ml-2">
+          <Eye size={12} />
           {formatViews(entry.views)}
         </span>
       </div>

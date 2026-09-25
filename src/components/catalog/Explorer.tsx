@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { BarChart3, Camera, Clapperboard, LayoutGrid, SlidersHorizontal, type LucideIcon } from "lucide-react";
+import { BarChart3, Camera, Clapperboard, SlidersHorizontal, type LucideIcon } from "lucide-react";
 import { motion } from "motion/react";
 import Sidebar from "@/components/layout/Sidebar";
 import ComponentCard from "./ComponentCard";
@@ -11,7 +11,7 @@ import type { ComponentEntry, SortKey } from "@/lib/types";
 
 const SORT_KEYS: SortKey[] = ["trending", "recent", "copied", "recommended"];
 
-const TAB_ICONS: Record<string, LucideIcon> = { Charts: BarChart3, Widgets: LayoutGrid };
+const TAB_ICONS: Record<string, LucideIcon> = { Charts: BarChart3 };
 
 export default function Explorer({
   data,
@@ -189,7 +189,7 @@ export default function Explorer({
         {filtered.length === 0 ? (
           <div className="text-sm text-muted py-20 text-center">No components match your search.</div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 pb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pb-10">
             {filtered.map((entry) => (
               <ComponentCard key={entry.slug} entry={entry} still={previewType === "still"} />
             ))}

@@ -4,7 +4,7 @@ import Explorer from "@/components/catalog/Explorer";
 import { CHARTS_PAGE_CATEGORIES } from "@/lib/types";
 import { buildOriginalEntries } from "@/lib/originalEntries";
 
-// Charts and Widgets originals live on their own /charts catalog, not mixed in here.
+// Chart originals live on their own /charts catalog, not mixed in here.
 const data = buildOriginalEntries().filter(
   (d) => !CHARTS_PAGE_CATEGORIES.includes(d.category)
 );
@@ -14,6 +14,10 @@ const data = buildOriginalEntries().filter(
 // ORIGINALS array, and new entries get slotted in beside their relatives there
 // rather than appended, so it tracks grouping rather than recency.
 const NEW_COMPONENTS = [
+  "infinite-drag-grid",
+  "jewel-case-rack",
+  "dotted-location-globe",
+  "isometric-stack-scroll",
   "spiral-gallery",
   "ink-reveal-cursor",
   "counter-loader-hero",

@@ -2,6 +2,10 @@
 // src/components/originals/. Generated from the ORIGINAL_COMPONENTS registry;
 // display names do not reliably match file names, so this mapping is explicit.
 export const ORIGINAL_SOURCE_FILES: Record<string, string> = {
+  "infinite-drag-grid": "InfiniteDragGrid",
+  "jewel-case-rack": "JewelCaseRack",
+  "dotted-location-globe": "DottedLocationGlobe",
+  "isometric-stack-scroll": "IsometricStackScroll",
   "aurora-login-card": "AuroraLoginCard",
   "spiral-gallery": "SpiralGallery",
   "falling-image-trail": "FallingImageTrail",

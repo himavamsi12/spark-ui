@@ -16,6 +16,9 @@ export type ComponentEntry = {
 export const CATEGORY_ORDER = ["Navigation", "Gallery", "Animations", "Text", "Widgets", "Charts", "Background"] as const;
 
 /** Categories that live on the /charts catalog instead of /components. */
-export const CHARTS_PAGE_CATEGORIES: readonly string[] = ["Charts", "Widgets"];
+export const CHARTS_PAGE_CATEGORIES: readonly string[] = ["Charts"];
+
+/** Categories built to fill a card, rendered directly in previews rather than on a scaled desktop stage. */
+export const CARD_SIZED_CATEGORIES: readonly string[] = ["Charts", "Widgets"];
 
 export type SortKey = "trending" | "recent" | "copied" | "recommended";

@@ -7,6 +7,10 @@ import dynamic from "next/dynamic";
 // three.js, matter-js, recharts, GSAP plugins — into every page that showed
 // even one card.
 
+const InfiniteDragGrid = dynamic(() => import("./InfiniteDragGrid"));
+const JewelCaseRack = dynamic(() => import("./JewelCaseRack"));
+const DottedLocationGlobe = dynamic(() => import("./DottedLocationGlobe"));
+const IsometricStackScroll = dynamic(() => import("./IsometricStackScroll"));
 const SpiralGallery = dynamic(() => import("./SpiralGallery"));
 const AuroraLoginCard = dynamic(() => import("./AuroraLoginCard"));
 const FallingImageTrail = dynamic(() => import("./FallingImageTrail"));
@@ -72,6 +76,10 @@ const MorphViews = dynamic(() => import("./mono-charts/MorphViews").then((m) => 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const ORIGINAL_COMPONENTS: Record<string, React.ComponentType<any>> = {
+  "infinite-drag-grid": InfiniteDragGrid,
+  "jewel-case-rack": JewelCaseRack,
+  "dotted-location-globe": DottedLocationGlobe,
+  "isometric-stack-scroll": IsometricStackScroll,
   "spiral-gallery": SpiralGallery,
   "aurora-login-card": AuroraLoginCard,
   "falling-image-trail": FallingImageTrail,
@@ -142,6 +150,10 @@ export const ORIGINAL_COMPONENTS: Record<string, React.ComponentType<any>> = {
  * card scrolls into view, instead of showing an empty box that pops in.
  */
 export const ORIGINAL_LOADERS: Record<string, () => Promise<unknown>> = {
+  "infinite-drag-grid": () => import("./InfiniteDragGrid"),
+  "jewel-case-rack": () => import("./JewelCaseRack"),
+  "dotted-location-globe": () => import("./DottedLocationGlobe"),
+  "isometric-stack-scroll": () => import("./IsometricStackScroll"),
   "spiral-gallery": () => import("./SpiralGallery"),
   "aurora-login-card": () => import("./AuroraLoginCard"),
   "falling-image-trail": () => import("./FallingImageTrail"),

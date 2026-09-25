@@ -8,9 +8,6 @@ const data = buildOriginalEntries().filter((e) => CHARTS_PAGE_CATEGORIES.include
 
 // Newest additions lead the grid.
 const NEW_CHARTS = [
-  "tip-splitter",
-  "ev-range-widgets",
-  "coverflow-player",
   "rank-race",
   "hour-dial",
   "flow-funnel",
@@ -27,9 +24,6 @@ const NEW_CHARTS = [
   "live-signal",
   "mirror-bars",
   "share-strip",
-  "route-covered",
-  "physics-dock",
-  "control-center-edit",
   "magnetic-columns",
   "orbit-segments",
   "liquid-tank",

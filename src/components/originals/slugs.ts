@@ -2,6 +2,10 @@
 // pulling in the client-only lazy component registry in ./index.tsx.
 // Keep in sync with ORIGINAL_COMPONENTS there.
 export const ORIGINAL_SLUGS: ReadonlySet<string> = new Set([
+  "infinite-drag-grid",
+  "jewel-case-rack",
+  "dotted-location-globe",
+  "isometric-stack-scroll",
   "spiral-gallery",
   "aurora-login-card",
   "falling-image-trail",
